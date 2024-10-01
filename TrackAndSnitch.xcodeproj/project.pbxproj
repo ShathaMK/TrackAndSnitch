@@ -6,13 +6,34 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		585B39322CABCBB400B3DB3C /* GloriaHallelujah-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 585B39312CABCBB400B3DB3C /* GloriaHallelujah-Regular.ttf */; };
+		585B39742CABDBD900B3DB3C /* PlayerRoleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585B39732CABDBD900B3DB3C /* PlayerRoleCard.swift */; };
+		58D3964E2CAA8D9B006A1DD0 /* DotLottie in Frameworks */ = {isa = PBXBuildFile; productRef = 58D3964D2CAA8D9B006A1DD0 /* DotLottie */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		585B39312CABCBB400B3DB3C /* GloriaHallelujah-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GloriaHallelujah-Regular.ttf"; sourceTree = "<group>"; };
+		585B39732CABDBD900B3DB3C /* PlayerRoleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRoleCard.swift; sourceTree = "<group>"; };
 		58D396392CAA88A4006A1DD0 /* TrackAndSnitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackAndSnitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		585B39232CAAB3B400B3DB3C /* Exceptions for "TrackAndSnitch" folder in "TrackAndSnitch" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = 58D396382CAA88A4006A1DD0 /* TrackAndSnitch */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		58D3963B2CAA88A4006A1DD0 /* TrackAndSnitch */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				585B39232CAAB3B400B3DB3C /* Exceptions for "TrackAndSnitch" folder in "TrackAndSnitch" target */,
+			);
 			path = TrackAndSnitch;
 			sourceTree = "<group>";
 		};
@@ -23,15 +44,26 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				58D3964E2CAA8D9B006A1DD0 /* DotLottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		585B391F2CAAAEC900B3DB3C /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				585B39312CABCBB400B3DB3C /* GloriaHallelujah-Regular.ttf */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		58D396302CAA88A4006A1DD0 = {
 			isa = PBXGroup;
 			children = (
+				585B39732CABDBD900B3DB3C /* PlayerRoleCard.swift */,
+				585B391F2CAAAEC900B3DB3C /* Fonts */,
 				58D3963B2CAA88A4006A1DD0 /* TrackAndSnitch */,
 				58D3963A2CAA88A4006A1DD0 /* Products */,
 			);
@@ -65,6 +97,7 @@
 			);
 			name = TrackAndSnitch;
 			packageProductDependencies = (
+				58D3964D2CAA8D9B006A1DD0 /* DotLottie */,
 			);
 			productName = TrackAndSnitch;
 			productReference = 58D396392CAA88A4006A1DD0 /* TrackAndSnitch.app */;
@@ -94,6 +127,9 @@
 			);
 			mainGroup = 58D396302CAA88A4006A1DD0;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				58D3964C2CAA8D9B006A1DD0 /* XCRemoteSwiftPackageReference "dotlottie-ios" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 58D3963A2CAA88A4006A1DD0 /* Products */;
 			projectDirPath = "";
@@ -109,6 +145,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				585B39322CABCBB400B3DB3C /* GloriaHallelujah-Regular.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +156,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				585B39742CABDBD900B3DB3C /* PlayerRoleCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +292,9 @@
 				DEVELOPMENT_ASSET_PATHS = "\"TrackAndSnitch/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TrackAndSnitch/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Track & Snitch";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -282,6 +323,9 @@
 				DEVELOPMENT_ASSET_PATHS = "\"TrackAndSnitch/Preview Content\"";
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = TrackAndSnitch/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Track & Snitch";
+				INFOPLIST_KEY_LSApplicationCategoryType = "";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -322,6 +366,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		58D3964C2CAA8D9B006A1DD0 /* XCRemoteSwiftPackageReference "dotlottie-ios" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/LottieFiles/dotlottie-ios";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		58D3964D2CAA8D9B006A1DD0 /* DotLottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 58D3964C2CAA8D9B006A1DD0 /* XCRemoteSwiftPackageReference "dotlottie-ios" */;
+			productName = DotLottie;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 58D396312CAA88A4006A1DD0 /* Project object */;
 }
