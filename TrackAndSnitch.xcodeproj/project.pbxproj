@@ -7,12 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5841179B2CAD1F6800A42056 /* RiddlePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5841179A2CAD1F6800A42056 /* RiddlePage.swift */; };
 		585B39322CABCBB400B3DB3C /* GloriaHallelujah-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 585B39312CABCBB400B3DB3C /* GloriaHallelujah-Regular.ttf */; };
 		585B39742CABDBD900B3DB3C /* PlayerRoleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585B39732CABDBD900B3DB3C /* PlayerRoleCard.swift */; };
 		58D3964E2CAA8D9B006A1DD0 /* DotLottie in Frameworks */ = {isa = PBXBuildFile; productRef = 58D3964D2CAA8D9B006A1DD0 /* DotLottie */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5841179A2CAD1F6800A42056 /* RiddlePage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RiddlePage.swift; sourceTree = "<group>"; };
 		585B39312CABCBB400B3DB3C /* GloriaHallelujah-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "GloriaHallelujah-Regular.ttf"; sourceTree = "<group>"; };
 		585B39732CABDBD900B3DB3C /* PlayerRoleCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerRoleCard.swift; sourceTree = "<group>"; };
 		58D396392CAA88A4006A1DD0 /* TrackAndSnitch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrackAndSnitch.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -62,6 +64,7 @@
 		58D396302CAA88A4006A1DD0 = {
 			isa = PBXGroup;
 			children = (
+				5841179A2CAD1F6800A42056 /* RiddlePage.swift */,
 				585B39732CABDBD900B3DB3C /* PlayerRoleCard.swift */,
 				585B391F2CAAAEC900B3DB3C /* Fonts */,
 				58D3963B2CAA88A4006A1DD0 /* TrackAndSnitch */,
@@ -156,6 +159,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5841179B2CAD1F6800A42056 /* RiddlePage.swift in Sources */,
 				585B39742CABDBD900B3DB3C /* PlayerRoleCard.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
