@@ -1,10 +1,3 @@
-//
-//  GamesInstructions.swift
-//  TrackAndSnitch
-//
-//  Created by Whyyy on 02/10/2024.
-//
-
 import SwiftUI
 
 // ---------------------------------- Instruction Card View ----------------------------------
@@ -25,34 +18,29 @@ struct InstructionCardView<Content: View>: View {
     }
 
     var body: some View {
-        ZStack {
-            // Background Image
-            Image("bg")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-
+        GeometryReader { geometry in
+            
             VStack {
                 Spacer() // Push card to bottom
-
+                
                 // Card content with an icon on top
                 ZStack(alignment: .top) {
                     // Background Card
                     VStack(spacing: 25) {
                         Spacer().frame(height: 40) // Space for the icon
-
+                        
                         Text(title)
                             .font(.system(size: 28, weight: .semibold, design: .rounded))
                             .foregroundColor(foregroundColor)
-
+                        
                         content
-                            .padding(.bottom, 60)
+                            .padding(.bottom, 70)
+                            .padding(.horizontal, 20)
                     }
-                    .padding()
-                    .frame(maxWidth: .infinity)
+                    .frame(width: geometry.size.width * 0.96)
                     .background(backgroundColor)
-                    .cornersRadius(30, corners: [.topLeft, .topRight])
-
+                    .cornersRadius(30, corners: [.allCorners])
+                    
                     // Icon overlapping with the card
                     Image(systemName: iconName)
                         .resizable()
@@ -64,9 +52,10 @@ struct InstructionCardView<Content: View>: View {
                         .overlay(Circle().stroke(backgroundColor, lineWidth: 4))
                         .offset(y: -50)
                 }
-                .padding(.horizontal, 20)
+                .frame(width: geometry.size.width, alignment: .center)
             }
             .ignoresSafeArea()
+            .frame(width: geometry.size.width, height: geometry.size.height)
         }
     }
 }
@@ -95,7 +84,6 @@ struct RoleView: View {
                 RolesItem(iconName: "questionmark.circle", roleTitle: "Helper", description: "Knows who the thief is. Help the thief deceive others.")
                 RolesItem(iconName: "theatermasks.circle", roleTitle: "Trickster", description: "Causes confusion, makes things tricky for the other players!")
             }
-            .padding(20)
         }
     }
 }
@@ -109,7 +97,7 @@ struct RolesItem: View {
     private let textColor = Color(red: 0.42, green: 0.34, blue: 0.28)
 
     var body: some View {
-        HStack(alignment: .top, spacing: 16) {
+        HStack(alignment: .top, spacing: 5) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: iconName)
                     .resizable()
@@ -122,7 +110,7 @@ struct RolesItem: View {
                     .foregroundColor(textColor)
                     .multilineTextAlignment(.center)
             }
-            .frame(width: 80, alignment: .center)
+            .frame(width: 75, alignment: .center)
 
             Text(description)
                 .font(.system(size: 16, weight: .regular, design: .rounded))
@@ -176,15 +164,24 @@ struct Winning: View {
 
 struct GameInstructions: View {
     var body: some View {
-        TabView {
-            GameInstruction()
-            RoleView()
-            Rounds()
-            Objective()
-            Winning()
+        ZStack{
+            
+            // Background Image
+            Image("bg")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+            
+            TabView {
+                GameInstruction()
+                RoleView()
+                Rounds()
+                Objective()
+                Winning()
+            }
+            .ignoresSafeArea()
+            .tabViewStyle(PageTabViewStyle())
         }
-        .ignoresSafeArea()
-        .tabViewStyle(PageTabViewStyle())
     }
 }
 
