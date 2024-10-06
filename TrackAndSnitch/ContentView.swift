@@ -2,20 +2,14 @@
 //  ContentView.swift
 //  TrackAndSnitch
 //
-//  Created by Shatha Almukhaild on 27/03/1446 AH.
+//  Created by Whyyy on 06/10/2024.
 //
 
 import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
-        }
-        .padding()
+        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
