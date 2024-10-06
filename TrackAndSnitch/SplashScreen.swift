@@ -3,38 +3,52 @@ import DotLottie
 
 struct SplashScreen: View {
     @State private var isAnimating = false
-    
+
     var body: some View {
         ZStack {
-            Color(hex: 0xE9DFCF).ignoresSafeArea()
+            // Background image
+            Image("BG")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+                .opacity(0.5)
+                
             
-            Text("Track & Snitch")
-                .fontWeight(.semibold)
-              //.font(.custom("GloriaHallelujah-Regular", size: 40))
-              .font(.system(size: 40, design: .rounded))
-                .padding(.bottom, 300)
-                .foregroundStyle(Color(hex: 0x6B4F44))
-                .opacity(isAnimating ? 1.0 : 0.0) // Fade-in effect
-                .animation(.easeInOut(duration: 2), value: isAnimating)
-  
+            // DotLottie Animation
             DotLottieAnimation(
                 webURL: "https://lottie.host/79ddcdf1-07b0-4453-8e91-84838ace40e5/p3cjR1wQ2M.json",
                 config: AnimationConfig(autoplay: true, loop: true)
-            ).view()
-        }
-        .onAppear {
-            isAnimating = true // Fade in the text
-        }
-    }
-  init(){
-        for familyName in UIFont.familyNames{
-            print(familyName)
-            for fontName in UIFont.fontNames(forFamilyName: familyName)
-            {
-                print("--\(fontName)")
+            )
+            .view()
+            .rotationEffect(Angle(degrees: -10))
+            .padding(.bottom, -600)
+            .padding(.leading, 20)
+            .opacity(0.7)
+            // Text
+            VStack {
+                Text("Seek & Sneak")
+                    .fontWeight(.semibold)
+                    .font(.system(size: 40, design: .rounded))
+                    .foregroundStyle(Color(hex: 0x6B4F44))
+                    .padding(.bottom,150)
             }
-        }
+            .opacity(isAnimating ? 1.0 : 0.0) // Fade-in effect
+            .animation(.easeInOut(duration: 2), value: isAnimating)
+            .onAppear {
+                isAnimating = true // Trigger the animation on appear
+            }
+        }        .navigationBarBackButtonHidden(true) // Hide the back button here
+
     }
+
+//    init() {
+//        for familyName in UIFont.familyNames {
+//            print(familyName)
+//            for fontName in UIFont.fontNames(forFamilyName: familyName) {
+//                print("--\(fontName)")
+//            }
+//        }
+//    }
 }
 
 #Preview {

@@ -29,7 +29,7 @@ struct RiddleFront: View {
             Image("Rectangle")
                 .resizable()
                 .scaledToFill()
-                .frame(width: 240, height:400)
+                .frame(width: 260, height:400)
                 .shadow(color: .gray, radius: 3, x: 0, y: 2)
             Text("Time is gold").foregroundStyle(Color(hex:0x902A39)).font(.system(.title,design:.rounded))
            
@@ -37,7 +37,7 @@ struct RiddleFront: View {
             //The radius is the shadow all around the card
             //x is the shadow on the right
             // y is the shadow on the bottom
-        }// end of ZStack
+        } .navigationBarBackButtonHidden(true) // end of ZStack
         .rotation3DEffect(Angle(degrees: degree), axis: (x: 0, y: 1, z: 0))
         // The x and y and z repersent the diraction of the filp
     }
@@ -126,7 +126,8 @@ struct RiddlePage: View {
                 Spacer()
                 Spacer()
                 Spacer()
-                Text("here's a riddle ").font(.system(.callout,design: .rounded)).padding(.top,25)
+                
+                Text("here's a riddle ").font(.system(.callout,design: .rounded)).padding(.top,120)
             
                 Spacer()
                 Button(action: {}){
