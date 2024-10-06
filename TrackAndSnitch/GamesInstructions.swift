@@ -181,6 +181,12 @@ struct GameInstructions: View {
             }
             .ignoresSafeArea()
             .tabViewStyle(PageTabViewStyle())
+            
+            .onAppear {
+                // Set custom colors for page indicator
+                UIPageControl.appearance().currentPageIndicatorTintColor = UIColor(Color(red: 0.57, green: 0.24, blue: 0.24)) // Active page color
+                UIPageControl.appearance().pageIndicatorTintColor = UIColor(Color(red: 0.42, green: 0.34, blue: 0.28).opacity(0.5)) // Inactive page color
+            }
         }
     }
 }
