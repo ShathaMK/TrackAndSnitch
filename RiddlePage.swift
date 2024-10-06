@@ -207,7 +207,12 @@ struct RiddlePage: View {
                     }
                     
                     
-                    Text("here's a riddle ").font(.system(.callout,design: .rounded)).padding(.top,120)
+                    Text("here's a riddle ").font(.system(.callout,design: .rounded)).padding(.top, 25)
+                    
+                    Spacer()
+                    Spacer()
+                    Spacer()
+                    
                     
                     if currentRiddleIndex < currentRiddles.count - 1 {
                         Button(action: {
