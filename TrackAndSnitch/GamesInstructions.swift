@@ -97,7 +97,7 @@ struct RolesItem: View {
     private let textColor = Color(red: 0.42, green: 0.34, blue: 0.28)
 
     var body: some View {
-        HStack(alignment: .top, spacing: 5) {
+        HStack(alignment: .center, spacing: 5) {
             VStack(alignment: .center, spacing: 8) {
                 Image(systemName: iconName)
                     .resizable()
@@ -126,7 +126,7 @@ struct RolesItem: View {
 struct Rounds: View {
     var body: some View {
         InstructionCardView(title: "Rounds", iconName: "arrowshape.forward.circle") {
-            Text("Round 1: Guess the stolen object by solving riddles\n\nRound 2: Vote on who you think the thief is based on the answers and riddles.")
+            Text("After finiishing the round guess the stolen object by solving riddles. Vote on who you think the thief is based on the answers and riddles.")
                 .font(.system(size: 22, weight: .regular, design: .rounded))
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0.42, green: 0.34, blue: 0.28))
@@ -154,7 +154,7 @@ struct Winning: View {
         InstructionCardView(title: "Winning", iconName: "trophy.circle") {
             Text("The Catchers win if they correctly guess the stolen object and identify the thief.\n\nThe Thief & Helper win if the catchers fail to correctly guess both the stolen object and the thief.")
                 .font(.system(size: 22, weight: .regular, design: .rounded))
-                .multilineTextAlignment(.leading)
+                .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0.42, green: 0.34, blue: 0.28))
         }
     }
