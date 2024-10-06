@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct ContentView: View {
+    
+    @State private var showNewView = false
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
+
 }
 
 #Preview {
