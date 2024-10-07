@@ -25,43 +25,124 @@ func playSound() {
     }
 }
 
+// Define data models
+struct Item {
+    let name: String
+    let riddles: [String]
+}
+
 // Define type aliases for clarity
 typealias Role = (title: String, imageName: String)
 typealias RoleConfiguration = [Role]
 
+
+// Function to parse a CSV line, considering that the riddles might contain commas
+func parseCSVLine(_ line: String) -> [String] {
+    var result: [String] = []
+    var currentField = ""
+    var insideQuotes = false
+
+    for character in line {
+        if character == "\"" {
+            insideQuotes.toggle()
+        } else if character == "," && !insideQuotes {
+            result.append(currentField)
+            currentField = ""
+        } else {
+            currentField.append(character)
+        }
+    }
+    result.append(currentField)
+
+    return result
+}
+
+
+// Function to read items and riddles from CSV file
+func readCSV(fileName: String) -> [Item] {
+    var items: [Item] = []
+
+    if let filepath = Bundle.main.path(forResource: "db7", ofType: "csv") {
+        do {
+            let contents = try String(contentsOfFile: filepath, encoding: .utf8)
+            let lines = contents.components(separatedBy: "\n").filter { !$0.isEmpty }
+
+            guard !lines.isEmpty else {
+                print("CSV file is empty")
+                return []
+            }
+
+            // Skip the first line if it contains headers
+            let dataLines = lines.dropFirst()
+
+            for line in dataLines {
+                // Use the parseCSVLine function to handle commas within fields
+                let components = parseCSVLine(line)
+
+                if components.count >= 2 {
+                    let itemName = components[0]
+                    let riddles = Array(components[1...]) // Get all riddles
+                    items.append(Item(name: itemName, riddles: riddles))
+                } else {
+                    print("Invalid line in CSV: \(line)")
+                }
+            }
+        } catch {
+            print("Error reading file: \(error.localizedDescription)")
+        }
+    } else {
+        print("File not found: \(fileName).csv")
+    }
+
+    return items
+}
+
+
 // Function to create players
-func createPlayers(numberOfPlayers: Int) -> [Player] {
+func createPlayers(numberOfPlayers: Int) -> (players: [Player], selectedItem: Item)? {
 
     // Generate player names
     var playerNames: [String] = []
     for i in 1...numberOfPlayers {
         playerNames.append("Player \(i)")
     }
-    var item = "Arabian Oud"
-    // Define role configurations separately
+
+    // Read items and riddles from db7.csv
+    let items = readCSV(fileName: "db7")
+
+    // Check if items are available
+    guard !items.isEmpty else {
+        print("No items found in db7.csv")
+        return nil
+    }
+
+    // Randomly select an item
+    let selectedItem = items.randomElement()!
+    
+    // Define role configurations separately, incorporating the selected item
     let rolesFor2Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
-        ("\n\n\n\n       Thief \n \(item)", "Thief_")
+        ("\n\n\n\n       Thief \n\(selectedItem.name)", "Thief_")
     ]
 
     let rolesFor3Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
-        ("\n\n\n\n       Thief \n \(item)", "Thief_")
+        ("\n\n\n\n       Thief \n\(selectedItem.name)", "Thief_")
     ]
 
     let rolesFor4Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
-        ("\n\n\n\n       Thief \n \(item)", "Thief_")
+        ("\n\n\n\n       Thief \n\(selectedItem.name)", "Thief_")
     ]
 
     let rolesFor5Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
-        ("\n\n\n\n       Thief \n \(item)", "Thief_"),
+        ("\n\n\n\n       Thief \n\(selectedItem.name)", "Thief_"),
         ("Trickster", "Trickster_")
     ]
 
@@ -70,7 +151,7 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Helper", "Helper_"),
-        ("\n\n\n\n       Thief \n \(item)", "Thief_"),
+        ("\n\n\n\n       Thief \n\(selectedItem.name)", "Thief_"),
         ("Trickster", "Trickster_")
     ]
 
@@ -80,7 +161,7 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Helper", "Helper_"),
-        ("\n\n\n\n       Thief \n \(item)", "Thief_"),
+        ("\n\n\n\n       Thief \n\(selectedItem.name)", "Thief_"),
         ("Trickster", "Trickster_")
     ]
 
@@ -91,7 +172,7 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Helper", "Helper_"),
-        ("\n\n\n\n       Thief \n \(item)", "Thief_"),
+        ("\n\n\n\n       Thief \n\(selectedItem.name)", "Thief_"),
         ("Trickster", "Trickster_")
     ]
 
@@ -103,7 +184,7 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Helper", "Helper_"),
-        ("\n\n\n\n       Thief \n \(item)", "Thief_"),
+        ("\n\n\n\n       Thief \n\(selectedItem.name)", "Thief_"),
         ("Trickster", "Trickster_")
     ]
 
@@ -116,7 +197,7 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Helper", "Helper_"),
-        ("\n\n\n\n       Thief \n \(item)", "Thief_"),
+        ("\n\n\n\n       Thief \n\(selectedItem.name)", "Thief_"),
         ("Trickster", "Trickster_")
     ]
 //
@@ -134,10 +215,10 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
     ]
 
     // Ensure valid number of players
-    guard numberOfPlayers >= 2, numberOfPlayers <= rolesArray.count + 2 else {
-        print("Invalid number of players. Must be between 2 and 10.")
-        return []
-    }
+        guard numberOfPlayers >= 2, numberOfPlayers <= rolesArray.count + 2 else {
+            print("Invalid number of players. Must be between 2 and \(rolesArray.count + 2).")
+            return nil
+        }
 
     // Get the roles for the current number of players
     let assignedRoles = rolesArray[numberOfPlayers - 2] // Get the roles for the current number of players
@@ -148,16 +229,16 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
     var players: [Player] = []
 
     for (index, name) in playerNames.enumerated() {
-        if index < shuffledRoles.count {
-            let role = shuffledRoles[index]
-            players.append(Player(name: name, cardImage: role.imageName, title: role.title))
-        } else {
-            // Assign default role if roles are fewer than players
-            players.append(Player(name: name, cardImage: "Trackers_", title: "Tracker"))
+            if index < shuffledRoles.count {
+                let role = shuffledRoles[index]
+                players.append(Player(name: name, cardImage: role.imageName, title: role.title))
+            } else {
+                // Assign default role if roles are fewer than players
+                players.append(Player(name: name, cardImage: "Trackers_", title: "Tracker"))
+            }
         }
-    }
 
-    return players
+        return (players, selectedItem)
 }
 
 // Player model
@@ -246,6 +327,7 @@ struct PlayerRoleCard: View {
     // Player management
     @State private var currentPlayerIndex = 0
     let players: [Player]
+    let selectedItem: Item
     // This state variable will determine if all player roles are assigned
     @State private var allRolesAssigned = false
 
@@ -350,10 +432,10 @@ struct PlayerRoleCard: View {
                     CardFront(width: width, height: height, imageName: currentPlayer.cardImage, degree: $frontDegree)
                     // Call the card back view
                     CardBack(width: width, height: height, degree: $backDegree)
-                    // NavigationLink for the SplashScreen
+                    // NavigationDestination to RiddlePage, passing selectedItem
                         .navigationDestination(isPresented: $allRolesAssigned) {
-                            RiddlePage() // Navigate to the next view when allRolesAssigned is true
-                        }
+                            RiddlePage(selectedItem: selectedItem) // Navigate to RiddlePage with selectedItem
+                    }
                 }
             }
             .onTapGesture {
@@ -366,12 +448,19 @@ struct PlayerRoleCard: View {
 
 // Game view to start the player role cards
 struct GameView: View {
-    var players: [Player] {
-        createPlayers(numberOfPlayers: 3) // Adjust the number of players as needed
+    var gameData: (players: [Player], selectedItem: Item)?
+    
+    init() {
+        self.gameData = createPlayers(numberOfPlayers: 5) // Adjust the number of players as needed
     }
-
+    
     var body: some View {
-        PlayerRoleCard(players: players)
+        if let gameData = gameData {
+            PlayerRoleCard(players: gameData.players, selectedItem: gameData.selectedItem)
+        } else {
+            Text("Error creating game data")
+                .foregroundColor(.red)
+        }
     }
 }
 
@@ -381,5 +470,4 @@ struct GameView_Previews: PreviewProvider {
         GameView()
     }
 }
-
 
