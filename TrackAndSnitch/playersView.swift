@@ -188,21 +188,22 @@ struct playersView: View {
                     // Start button using NavigationLink to navigate to VotingView
                     
                     NavigationLink(
-                        destination: VotingView(playersData: playersData).navigationBarBackButtonHidden(true),  // Pass player data to VotingView
+                        destination: GameView(playerNames: playersData.playersNames).navigationBarBackButtonHidden(true),
                         label: {
                             Text("Start")
                                 .frame(width: 200, height: 40)
-                                .background(playersData.playersNames.count >= 4 ? Color(hex: 0x6B4E45) : Color.gray)  // Enable if 4+ players
+                                .background(playersData.playersNames.count >= minPlayers ? Color(hex: 0x6B4E45) : Color.gray)
                                 .foregroundColor(.white)
                                 .cornerRadius(10)
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 10)
-                                        .stroke(playersData.playersNames.count >= 4 ? Color(hex: 0x6B4E45) : Color.gray, lineWidth: 2)
+                                        .stroke(playersData.playersNames.count >= minPlayers ? Color(hex: 0x6B4E45) : Color.gray, lineWidth: 2)
                                 )
-                        }  // End of label for button
-                    )  // End of NavigationLink
-                    .disabled(playersData.playersNames.count < 4)  // Disable until min players reached
-                        .padding()
+                        }
+                    )
+                    .disabled(playersData.playersNames.count < 4)
+                    .padding()
+
                     
                 }// end of VStack 2
             }//end zstack
