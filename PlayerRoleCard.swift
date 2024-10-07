@@ -41,7 +41,7 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
     // Define role configurations separately
     let rolesFor2Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
-        ("Thief", "Thief_")
+        ("\n\n\n\n       Thief \n \(item)", "Thief_")
     ]
 
     let rolesFor3Players: RoleConfiguration = [
@@ -54,14 +54,14 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
-        ("Thief", "Thief_")
+        ("\n\n\n\n       Thief \n \(item)", "Thief_")
     ]
 
     let rolesFor5Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
-        ("Thief", "Thief_"),
+        ("\n\n\n\n       Thief \n \(item)", "Thief_"),
         ("Trickster", "Trickster_")
     ]
 
@@ -70,7 +70,7 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Helper", "Helper_"),
-        ("Thief", "Thief_"),
+        ("\n\n\n\n       Thief \n \(item)", "Thief_"),
         ("Trickster", "Trickster_")
     ]
 
@@ -80,7 +80,7 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Helper", "Helper_"),
-        ("Thief", "Thief_"),
+        ("\n\n\n\n       Thief \n \(item)", "Thief_"),
         ("Trickster", "Trickster_")
     ]
 
@@ -91,7 +91,7 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Helper", "Helper_"),
-        ("Thief", "Thief_"),
+        ("\n\n\n\n       Thief \n \(item)", "Thief_"),
         ("Trickster", "Trickster_")
     ]
 
@@ -103,7 +103,7 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Helper", "Helper_"),
-        ("Thief", "Thief_"),
+        ("\n\n\n\n       Thief \n \(item)", "Thief_"),
         ("Trickster", "Trickster_")
     ]
 
@@ -116,7 +116,7 @@ func createPlayers(numberOfPlayers: Int) -> [Player] {
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Helper", "Helper_"),
-        ("Thief", "Thief_"),
+        ("\n\n\n\n       Thief \n \(item)", "Thief_"),
         ("Trickster", "Trickster_")
     ]
 //
@@ -367,7 +367,7 @@ struct PlayerRoleCard: View {
 // Game view to start the player role cards
 struct GameView: View {
     var players: [Player] {
-        createPlayers(numberOfPlayers: 10) // Adjust the number of players as needed
+        createPlayers(numberOfPlayers: 3) // Adjust the number of players as needed
     }
 
     var body: some View {
