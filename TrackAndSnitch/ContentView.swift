@@ -11,6 +11,9 @@ struct ContentView: View {
     @State private var shine = false
     @State private var showingInstructions = false // State to manage the instructions sheet
     
+    // Custom color for the buttons
+        let buttonColor = Color(UIColor(red: 107/255, green: 78/255, blue: 69/255, alpha: 1)) // #6B4E45
+    
     var body: some View {
         ZStack {
             // Background Image
@@ -194,7 +197,7 @@ struct ContentView: View {
                     Text("Start")
                         .font(.title2)
                         .frame(width: 150, height: 50)
-                        .background(Color.gray.opacity(0.2))
+                        .background(buttonColor) // Updated button color
                         .cornerRadius(10)
                         .foregroundColor(.white)
                 }

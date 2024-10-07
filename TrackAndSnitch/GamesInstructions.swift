@@ -167,7 +167,7 @@ struct GameInstructions: View {
         ZStack{
         
             // Background Image
-            Image("bg")
+            Image("BackgroundImage")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
