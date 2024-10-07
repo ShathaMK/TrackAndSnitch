@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5841179B2CAD1F6800A42056 /* RiddlePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5841179A2CAD1F6800A42056 /* RiddlePage.swift */; };
-		585B39322CABCBB400B3DB3C /* GloriaHallelujah-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 585B39312CABCBB400B3DB3C /* GloriaHallelujah-Regular.ttf */; };
-		585B39742CABDBD900B3DB3C /* PlayerRoleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585B39732CABDBD900B3DB3C /* PlayerRoleCard.swift */; };
-		58D3964E2CAA8D9B006A1DD0 /* DotLottie in Frameworks */ = {isa = PBXBuildFile; productRef = 58D3964D2CAA8D9B006A1DD0 /* DotLottie */; };
+
+		AF48C5F12CB2A08300E8D539 /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = AF48C5F02CB2A08300E8D539 /* ConfettiSwiftUI */; };
+
+		
+    
+
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,7 +48,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+
+				AF48C5F12CB2A08300E8D539 /* ConfettiSwiftUI in Frameworks */,
+
 				58D3964E2CAA8D9B006A1DD0 /* DotLottie in Frameworks */,
+
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,7 +106,11 @@
 			);
 			name = TrackAndSnitch;
 			packageProductDependencies = (
+
+				AF48C5F02CB2A08300E8D539 /* ConfettiSwiftUI */,
+
 				58D3964D2CAA8D9B006A1DD0 /* DotLottie */,
+
 			);
 			productName = TrackAndSnitch;
 			productReference = 58D396392CAA88A4006A1DD0 /* TrackAndSnitch.app */;
@@ -131,7 +141,11 @@
 			mainGroup = 58D396302CAA88A4006A1DD0;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
+
+				AF48C5EF2CB2A08300E8D539 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
+
 				58D3964C2CAA8D9B006A1DD0 /* XCRemoteSwiftPackageReference "dotlottie-ios" */,
+
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 58D3963A2CAA88A4006A1DD0 /* Products */;
@@ -372,21 +386,37 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+
+		AF48C5EF2CB2A08300E8D539 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+
 		58D3964C2CAA8D9B006A1DD0 /* XCRemoteSwiftPackageReference "dotlottie-ios" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/LottieFiles/dotlottie-ios";
 			requirement = {
 				branch = main;
 				kind = branch;
+
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+
+		AF48C5F02CB2A08300E8D539 /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AF48C5EF2CB2A08300E8D539 /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
+
 		58D3964D2CAA8D9B006A1DD0 /* DotLottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 58D3964C2CAA8D9B006A1DD0 /* XCRemoteSwiftPackageReference "dotlottie-ios" */;
 			productName = DotLottie;
+
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
