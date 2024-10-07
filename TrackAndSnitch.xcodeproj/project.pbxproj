@@ -11,6 +11,7 @@
 		585B39322CABCBB400B3DB3C /* GloriaHallelujah-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 585B39312CABCBB400B3DB3C /* GloriaHallelujah-Regular.ttf */; };
 		585B39742CABDBD900B3DB3C /* PlayerRoleCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 585B39732CABDBD900B3DB3C /* PlayerRoleCard.swift */; };
 		58D3964E2CAA8D9B006A1DD0 /* DotLottie in Frameworks */ = {isa = PBXBuildFile; productRef = 58D3964D2CAA8D9B006A1DD0 /* DotLottie */; };
+		AFC686622CB3E44A0006AD8E /* ConfettiSwiftUI in Frameworks */ = {isa = PBXBuildFile; productRef = AFC686612CB3E44A0006AD8E /* ConfettiSwiftUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AFC686622CB3E44A0006AD8E /* ConfettiSwiftUI in Frameworks */,
 				58D3964E2CAA8D9B006A1DD0 /* DotLottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -101,6 +103,7 @@
 			name = TrackAndSnitch;
 			packageProductDependencies = (
 				58D3964D2CAA8D9B006A1DD0 /* DotLottie */,
+				AFC686612CB3E44A0006AD8E /* ConfettiSwiftUI */,
 			);
 			productName = TrackAndSnitch;
 			productReference = 58D396392CAA88A4006A1DD0 /* TrackAndSnitch.app */;
@@ -132,6 +135,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				58D3964C2CAA8D9B006A1DD0 /* XCRemoteSwiftPackageReference "dotlottie-ios" */,
+				AFC686602CB3E44A0006AD8E /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 58D3963A2CAA88A4006A1DD0 /* Products */;
@@ -380,6 +384,14 @@
 				kind = branch;
 			};
 		};
+		AFC686602CB3E44A0006AD8E /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/simibac/ConfettiSwiftUI";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.1.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -387,6 +399,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 58D3964C2CAA8D9B006A1DD0 /* XCRemoteSwiftPackageReference "dotlottie-ios" */;
 			productName = DotLottie;
+		};
+		AFC686612CB3E44A0006AD8E /* ConfettiSwiftUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AFC686602CB3E44A0006AD8E /* XCRemoteSwiftPackageReference "ConfettiSwiftUI" */;
+			productName = ConfettiSwiftUI;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
