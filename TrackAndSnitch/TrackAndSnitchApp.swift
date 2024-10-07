@@ -11,7 +11,8 @@ import SwiftUI
 struct TrackAndSnitchApp: App {
     var body: some Scene {
         WindowGroup {
-            GameView()
+            GameView() // Start the app from GameView
         }
     }
 }
+
