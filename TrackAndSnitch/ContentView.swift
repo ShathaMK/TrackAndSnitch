@@ -2,8 +2,9 @@
 //  ContentView.swift
 //  TrackAndSnitch
 //
-//  Created by Shatha Almukhaild on 27/03/1446 AH.
+//  Created by Whyyy on 06/10/2024.
 //
+
 import SwiftUI
 
 struct ContentView: View {
@@ -258,3 +259,7 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+
+
+
+
