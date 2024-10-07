@@ -3,7 +3,8 @@ import DotLottie
 
 struct SplashScreen: View {
     @State private var isAnimating = false
-
+    @State private var navigateToPlayerView = false // State to trigger navigation
+    
     var body: some View {
         ZStack {
             // Background image
@@ -12,7 +13,7 @@ struct SplashScreen: View {
                 .scaledToFill()
                 .ignoresSafeArea()
                 .opacity(0.5)
-                
+            
             
             // DotLottie Animation
             DotLottieAnimation(
@@ -36,10 +37,24 @@ struct SplashScreen: View {
             .animation(.easeInOut(duration: 2), value: isAnimating)
             .onAppear {
                 isAnimating = true // Trigger the animation on appear
+                
+                // Delay of 5 seconds before navigating to PlayerView
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    navigateToPlayerView = true
+                }
             }
-        }        .navigationBarBackButtonHidden(true) // Hide the back button here
-
+        }
+        .navigationBarBackButtonHidden(true) // Hide the back button here
+        .background(
+            // Navigation to PlayerView after 5 seconds
+            NavigationLink(destination: playersView(), isActive: $navigateToPlayerView) {
+                EmptyView()
+            }
+                .hidden() // Hide the NavigationLink itself
+        )
+        .navigationBarBackButtonHidden(true).navigationBarBackButtonHidden(true)
     }
+}
 
 //    init() {
 //        for familyName in UIFont.familyNames {
@@ -49,7 +64,7 @@ struct SplashScreen: View {
 //            }
 //        }
 //    }
-}
+//}
 
 #Preview {
     SplashScreen()

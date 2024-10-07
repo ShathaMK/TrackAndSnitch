@@ -71,7 +71,6 @@ struct playersView: View {
     
     
     var body: some View {
-        NavigationView {
             ZStack{
                 //Background for page
                 Image("bgpaper").resizable().scaledToFill().ignoresSafeArea()
@@ -85,7 +84,8 @@ struct playersView: View {
                             .background(Color(hex: 0x6B4E45))
                             .foregroundColor(.white) // White text
                             .cornerRadius(10) // Rounded corners
-                        .padding(.trailing, 290)                }
+                        .padding(.trailing, 290)
+                    }
                     
                     //titles
                     Text("Add Your Player").font(.largeTitle).bold().foregroundColor(Color(hex: 0x6B4E45)).padding(.top, 10)
@@ -188,7 +188,8 @@ struct playersView: View {
                     // Start button using NavigationLink to navigate to VotingView
                     
                     NavigationLink(
-                        destination: GameView(playerNames: playersData.playersNames).navigationBarBackButtonHidden(true),
+                        destination: GameView(playerNames: playersData.playersNames)
+                            .navigationBarBackButtonHidden(true),
                         label: {
                             Text("Start")
                                 .frame(width: 200, height: 40)
@@ -200,14 +201,13 @@ struct playersView: View {
                                         .stroke(playersData.playersNames.count >= minPlayers ? Color(hex: 0x6B4E45) : Color.gray, lineWidth: 2)
                                 )
                         }
-                    )
+                    ) // end of NavLink
                     .disabled(playersData.playersNames.count < 4)
                     .padding()
-
                     
                 }// end of VStack 2
             }//end zstack
-        } // end of NavigationView 
+        .navigationBarBackButtonHidden(true)
     } // end of body
 } // end of playersView
 
