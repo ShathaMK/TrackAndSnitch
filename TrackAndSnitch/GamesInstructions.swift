@@ -165,7 +165,7 @@ struct Winning: View {
 struct GameInstructions: View {
     var body: some View {
         ZStack{
-            
+        
             // Background Image
             Image("bg")
                 .resizable()

@@ -7,7 +7,7 @@ struct SplashScreen: View {
     var body: some View {
         ZStack {
             // Background image
-            Image("BG")
+            Image("bgpaper")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
@@ -26,7 +26,7 @@ struct SplashScreen: View {
             .opacity(0.7)
             // Text
             VStack {
-                Text("Seek & Sneak")
+                Text("Seek or Sneak")
                     .fontWeight(.semibold)
                     .font(.system(size: 40, design: .rounded))
                     .foregroundStyle(Color(hex: 0x6B4F44))
