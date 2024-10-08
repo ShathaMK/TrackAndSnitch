@@ -29,7 +29,12 @@ let iconColors: [Color] = [
 ]
 
 class PlayersData: ObservableObject {
-    @Published var playersNames: [String] = [] // Players names
+    static let shared = PlayersData() // Singleton instance
+    
+     init() {} // Prevent external instantiation
+    
+    @Published var playersNames: [String] = []
+    // Add other relevant properties and methods here
 }
 
 struct playersView: View {

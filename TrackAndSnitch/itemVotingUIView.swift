@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct VotingItemsView: View {
-    @EnvironmentObject var playersData: PlayersData // Access PlayersData from Environment
+    @ObservedObject var playersData = PlayersData.shared // Access the singleton
     let selectedItem: Item // Receive the selected item
 
     @State var currentVoterIndex: Int = 0 // Track which player is voting
@@ -22,68 +22,74 @@ struct VotingItemsView: View {
             VStack {
                 if csvDataLoaded {
                     if !votingCompleted {
-                        Text("What is the stolen item?")
-                            .font(.title)
-                            .bold()
-                            .foregroundColor(Color(hex: 0x6B4E45))
-                        
-                        Text("\(playersData.playersNames[currentVoterIndex])'s turn to vote")
-                            .font(.title3)
-                            .foregroundColor(Color(hex: 0x6B4E45))
-                            .bold()
-                            .padding(.bottom)
-                        
-                        // List of items with radio buttons for voting
-                        List(items.indices, id: \.self) { index in
-                            HStack {
-                                Image(systemName: selectedItemIndex == index ? "circle.circle.fill" : "circle")
-                                    .foregroundColor(Color(hex: 0x6B4E45))
-                                    .onTapGesture {
-                                        selectedItemIndex = index // Set selected item for vote
-                                    }
-                                Text(items[index])
-                                    .bold()
-                                    .foregroundColor(Color(hex: 0x6B4E45))
-                                    .padding()
-                            }
-                            .listRowBackground(Color(hex: 0xFCF4E8)) // Change list's row color
-                            .padding(20)
-                        }
-                        .cornerRadius(5)
-                        .scrollContentBackground(.hidden) // Hide the background color on the list
-                        
-                        Button(action: {
-                            if let selectedItemIndex = selectedItemIndex {
-                                let selectedVote = items[selectedItemIndex]
-                                let currentPlayer = playersData.playersNames[currentVoterIndex]
-                                
-                                // Save the current player's vote
-                                votes[currentPlayer] = selectedVote
-                                
-                                // Move to the next player or complete voting
-                                if currentVoterIndex < playersData.playersNames.count - 1 {
-                                    currentVoterIndex += 1
-                                    self.selectedItemIndex = nil  // Reset selection for next player
-                                } else {
-                                    votingCompleted = true  // All players have voted
-                                    showVotingCompleteAlert = true // Show alert upon completion
+                        if currentVoterIndex < playersData.playersNames.count {
+                            Text("What is the stolen item?")
+                                .font(.title)
+                                .bold()
+                                .foregroundColor(Color(hex: 0x6B4E45))
+                            
+                            Text("\(playersData.playersNames[currentVoterIndex])'s turn to vote")
+                                .font(.title3)
+                                .foregroundColor(Color(hex: 0x6B4E45))
+                                .bold()
+                                .padding(.bottom)
+                            
+                            // List of items with radio buttons for voting
+                            List(items.indices, id: \.self) { index in
+                                HStack {
+                                    Image(systemName: selectedItemIndex == index ? "circle.circle.fill" : "circle")
+                                        .foregroundColor(Color(hex: 0x6B4E45))
+                                        .onTapGesture {
+                                            selectedItemIndex = index // Set selected item for vote
+                                        }
+                                    Text(items[index])
+                                        .bold()
+                                        .foregroundColor(Color(hex: 0x6B4E45))
+                                        .padding()
                                 }
+                                .listRowBackground(Color(hex: 0xFCF4E8)) // Change list's row color
+                                .padding(20)
                             }
-                        }) {
-                            Text(currentVoterIndex >= playersData.playersNames.count - 1 ? "Reveal Votes!" : "Continue")
-                                .padding()
-                                .background(selectedItemIndex != nil ? Color(hex: 0x6B4E45) : Color.gray)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                        }
-                        .disabled(selectedItemIndex == nil)  // Disable until an item is selected
-                        .padding(.horizontal, 20)
-                        .alert(isPresented: $showVotingCompleteAlert) {
-                            Alert(
-                                title: Text("Voting Completed"),
-                                message: Text("All players have voted."),
-                                dismissButton: .default(Text("OK"))
-                            )
+                            .cornerRadius(5)
+                            .scrollContentBackground(.hidden) // Hide the background color on the list
+                            
+                            Button(action: {
+                                if let selectedItemIndex = selectedItemIndex {
+                                    let selectedVote = items[selectedItemIndex]
+                                    let currentPlayer = playersData.playersNames[currentVoterIndex]
+                                    
+                                    // Save the current player's vote
+                                    votes[currentPlayer] = selectedVote
+                                    
+                                    // Move to the next player or complete voting
+                                    if currentVoterIndex < playersData.playersNames.count - 1 {
+                                        currentVoterIndex += 1
+                                        self.selectedItemIndex = nil  // Reset selection for next player
+                                    } else {
+                                        votingCompleted = true  // All players have voted
+                                        showVotingCompleteAlert = true // Show alert upon completion
+                                    }
+                                }
+                            }) {
+                                Text(currentVoterIndex >= playersData.playersNames.count - 1 ? "Reveal Votes!" : "Continue")
+                                    .padding()
+                                    .background(selectedItemIndex != nil ? Color(hex: 0x6B4E45) : Color.gray)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                            }
+                            .disabled(selectedItemIndex == nil)  // Disable until an item is selected
+                            .padding(.horizontal, 20)
+                            .alert(isPresented: $showVotingCompleteAlert) {
+                                Alert(
+                                    title: Text("Voting Completed"),
+                                    message: Text("All players have voted."),
+                                    dismissButton: .default(Text("OK"))
+                                )
+                            }
+                        } else {
+                            // Handle out-of-range access
+                            Text("Error: No player available for voting.")
+                                .foregroundColor(.red)
                         }
                     } else {
                         // Optional: Additional UI when voting is completed
@@ -96,12 +102,21 @@ struct VotingItemsView: View {
                 }
             }
             .onAppear {
+                // Debugging: Log current state
+                print("VotingItemsView appeared. playersNames: \(playersData.playersNames), currentVoterIndex: \(currentVoterIndex)")
                 loadItemsFromCSV()
+                
+                // Ensure playersNames is populated
+                if playersData.playersNames.isEmpty {
+                    playersData.playersNames = PlayerRoleStorage.shared.getRoles().map { $0.0 }
+                    print("playersData.playersNames was empty. Initialized with: \(playersData.playersNames)")
+                }
             }
             .padding()
         } // End of ZStack
     } // End of body
 
+    // Function to calculate item votes
     func calculateItemVotes(votes: [String: String]) -> [(item: String, votes: Int)] {
         var itemVoteCount: [String: Int] = [:]
         
@@ -171,14 +186,23 @@ struct VotingItemsView: View {
         }
     } // end of function
 
-} // end of VotingItemsView
+}
 
 struct VotingItemsView_Previews: PreviewProvider {
     static var previews: some View {
-        let samplePlayersData = PlayersData()
-        samplePlayersData.playersNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
-        let sampleItem = Item(name: "Sample Item", riddles: ["Riddle 1", "Riddle 2"])
+        let sampleItem = Item(
+            name: "Sample Item",
+            riddles: ["Riddle 1", "Riddle 2"]
+        )
+        // Initialize PlayerRoleStorage with sample roles
+        PlayerRoleStorage.shared.saveRoles([
+            ("Player 1", "Tracker"),
+            ("Player 2", "Thief"),
+            ("Player 3", "Tracker"),
+            ("Player 4", "Trickster")
+        ])
+        // Populate PlayersData.shared.playersNames
+        PlayersData.shared.playersNames = PlayerRoleStorage.shared.getRoles().map { $0.0 }
         return VotingItemsView(selectedItem: sampleItem)
-            .environmentObject(samplePlayersData) // Inject EnvironmentObject for preview
     }
 }

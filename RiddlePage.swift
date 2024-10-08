@@ -28,7 +28,7 @@ struct RiddleFront: View {
 }
 
 struct RiddlePage: View {
-    @EnvironmentObject var playersData: PlayersData // Access PlayersData from the environment
+    @ObservedObject var playersData = PlayersData.shared  // Access PlayersData from the environment
     @State var selectedItem: Item // The selected item passed from the previous view
 
     // The degree of rotation for the back of the card
@@ -44,7 +44,7 @@ struct RiddlePage: View {
     // The duration and delay of the flip animation
     let durationAndDelay: CGFloat = 0.3
     // Timer variables
-    @State private var timeRemaining = 10
+    @State private var timeRemaining = 5
     @State private var currentRiddleIndex: Int = 0
     @State private var isActive = true
     @State private var currentRiddles: [String] = []
@@ -130,6 +130,12 @@ struct RiddlePage: View {
             }
             .navigationBarBackButtonHidden(true) // Remove the back button
             .onAppear {
+                // Populate playersNames if empty
+                if playersData.playersNames.isEmpty {
+                    playersData.playersNames = PlayerRoleStorage.shared.getRoles().map { $0.0 }
+                    print("playersData.playersNames initialized with: \(playersData.playersNames)")
+                }
+                
                 // Randomly select two riddles from the selected item's riddles
                 currentRiddles = Array(selectedItem.riddles.shuffled().prefix(2))
                 currentRiddleIndex = 0
@@ -154,9 +160,7 @@ struct RiddlePage: View {
             .background(
                 // NavigationLink to navigate programmatically
                 NavigationLink(
-                    destination: VotingItemsView(selectedItem: selectedItem)
-                        .environmentObject(playersData) // Pass EnvironmentObject
-                        .navigationBarBackButtonHidden(true),
+                    destination: VotingItemsView(selectedItem: selectedItem),
                     isActive: $navigateToVoting
                 ) {
                     EmptyView()
@@ -203,31 +207,36 @@ struct RiddlePage: View {
         // Removed navigation to the next page
     }
 
-    // Placeholder for playSound() function
+    // Implement playSound()
     func playSound() {
-        // Implement your sound playing logic here
-        // For example, using AVFoundation to play a sound file
-        guard let url = Bundle.main.url(forResource: "flipSound", withExtension: "mp3") else { return }
-
-        do {
-            let player = try AVAudioPlayer(contentsOf: url)
-            player.play()
-        } catch {
-            print("Error playing sound: \(error.localizedDescription)")
+        if let url = Bundle.main.url(forResource: "flipcard-91468", withExtension: "mp3") {
+            do {
+                audioPlayer = try AVAudioPlayer(contentsOf: url)
+                audioPlayer.play()
+            } catch {
+                print("Error playing sound: \(error.localizedDescription)")
+            }
+        } else {
+            print("Sound file not found.")
         }
     }
 }
 
 struct RiddlePage_Previews: PreviewProvider {
     static var previews: some View {
-        // Provide a sample Item for preview purposes
         let sampleItem = Item(
             name: "Sample Item",
             riddles: ["Riddle 1", "Riddle 2", "Riddle 3"]
         )
-        let samplePlayersData = PlayersData()
-        samplePlayersData.playersNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
+        // Initialize PlayerRoleStorage with sample roles
+        PlayerRoleStorage.shared.saveRoles([
+            ("Player 1", "Tracker"),
+            ("Player 2", "Thief"),
+            ("Player 3", "Tracker"),
+            ("Player 4", "Trickster")
+        ])
+        // Populate PlayersData.shared.playersNames
+        PlayersData.shared.playersNames = PlayerRoleStorage.shared.getRoles().map { $0.0 }
         return RiddlePage(selectedItem: sampleItem)
-            .environmentObject(samplePlayersData) // Inject EnvironmentObject
     }
 }
