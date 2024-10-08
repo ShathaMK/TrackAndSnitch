@@ -44,6 +44,7 @@ struct Item {
     let riddles: [String]
 }
 
+
 // Define type aliases for clarity
 typealias Role = (title: String, imageName: String)
 typealias RoleConfiguration = [Role]
@@ -68,6 +69,9 @@ func parseCSVLine(_ line: String) -> [String] {
 
     return result
 }
+
+//most voted player's role
+var mostVotedPlayerRole: String = "" // Store the most voted player's role
 
 // Function to read items and riddles from CSV file
 func readCSV(fileName: String) -> [Item] {
@@ -465,8 +469,10 @@ struct PlayerRoleCard: View {
                     CardBack(width: width, height: height, degree: $backDegree)
                     // NavigationDestination to RiddlePage, passing selectedItem
                         .navigationDestination(isPresented: $allRolesAssigned) {
-                            RiddlePage(selectedItem: selectedItem) // Navigate to RiddlePage with selectedItem
-                    }
+                            RiddlePage(
+                                playerRole: mostVotedPlayerRole, selectedItem: selectedItem // Pass playerRole here
+                            )
+                        }
                 }
             }
             .onTapGesture {

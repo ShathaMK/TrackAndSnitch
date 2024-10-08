@@ -3,6 +3,7 @@ import SwiftUI
 struct VotingItemsView: View {
     @ObservedObject var playersData = PlayersData.shared // Access the singleton
     let selectedItem: Item // Receive the selected item
+    let playerRole: String // Player role to be passed to WinnersView
 
     @State var currentVoterIndex: Int = 0 // Track which player is voting
     @State var selectedItemIndex: Int? = nil // Track selected item
@@ -11,7 +12,6 @@ struct VotingItemsView: View {
     @State var votes: [String: String] = [:] // Dictionary to store votes (player -> item)
     @State var votingCompleted = false // Track if voting is completed
     @State var csvDataLoaded = false // Track if the CSV has been loaded
-    @State private var showVotingCompleteAlert = false // For showing alert after voting
     @State var navigateToItemReveal = false  // For navigation to ItemVoteReveal view
 
 
@@ -70,7 +70,7 @@ NavigationView {
                                         self.selectedItemIndex = nil  // Reset selection for next player
                                     } else {
                                         votingCompleted = true  // All players have voted
-                                        showVotingCompleteAlert = true // Show alert upon completion
+                                        navigateToItemReveal = true
                                     }
                                 }
                             }) {
@@ -82,24 +82,12 @@ NavigationView {
                             }
                             .disabled(selectedItemIndex == nil)  // Disable until an item is selected
                             .padding(.horizontal, 20)
-                           /* .alert(isPresented: $showVotingCompleteAlert) {
-                                Alert(
-                                    title: Text("Voting Completed"),
-                                    message: Text("All players have voted."),
-                                    dismissButton: .default(Text("OK"))
-                                )
-                            }*/
                         } else {
                             // Handle out-of-range access
                             Text("Error: No player available for voting.")
                                 .foregroundColor(.red)
                         }
-                    } /*else {
-                       // Optional: Additional UI when voting is completed
-                       Text("Voting Completed!")
-                       .font(.title)
-                       .padding()
-                       }*/
+                    }
                 } else {
                     Text("Loading voting items...")
                 }
@@ -116,11 +104,16 @@ NavigationView {
                 }
             }
             .padding()
+         
             NavigationLink(destination: VotingRevealItems(
-                itemsVotes: calculateItemVotes(votes: votes)).navigationBarBackButtonHidden(true),
-                           isActive: $navigateToItemReveal) {
+                mostVotedPlayerRole: playerRole, // Pass the correct parameter
+                itemsVotes: calculateItemVotes(votes: votes) // Ensure this returns [(String, Int)]
+            ).navigationBarBackButtonHidden(true),
+            isActive: $navigateToItemReveal) {
                 EmptyView() // This ensures we only navigate when the button triggers it
             }
+
+
         } // End of ZStack
     } // end of nav view
     } // End of body
@@ -172,21 +165,18 @@ NavigationView {
                     }
                 }
                 
-                // Pick one correct answer and two wrong items
-                if let correct = allItems.randomElement() {
-                    correctAnswer = correct
-                    var wrongItems = allItems.filter { $0 != correct }
-                    wrongItems.shuffle()
-                    
-                    // Combine the correct answer with two wrong ones
-                    if wrongItems.count >= 2 {
-                        items = ([correct] + wrongItems.prefix(2)).shuffled()
-                    } else {
-                        // Handle cases where there are fewer than 2 wrong items
-                        items = ([correct] + wrongItems).shuffled()
-                    }
+                correctAnswer = selectedItem.name
+                
+                let wrongItemsPool = allItems.filter{$0 != selectedItem.name}
+                var wrongItems = wrongItemsPool.shuffled()
+                
+                let numWrongItems = min(2, wrongItems.count)
+                let selectedWrongItems = Array(wrongItems.prefix( numWrongItems))
+                
+                items = ([selectedItem.name] + selectedWrongItems).shuffled()
+
                     csvDataLoaded = true  // Indicate that data is ready
-                }
+                
             } catch {
                 print("Error reading the CSV file: \(error)")
             }
@@ -212,6 +202,15 @@ struct VotingItemsView_Previews: PreviewProvider {
         ])
         // Populate PlayersData.shared.playersNames
         PlayersData.shared.playersNames = PlayerRoleStorage.shared.getRoles().map { $0.0 }
-        return VotingItemsView(selectedItem: sampleItem)
+        
+        // Create a sample PlayersData instance to pass
+      //  let playersData = PlayersData.shared
+        
+        let samplePlayerRole = "Thief"
+
+        // Pass the required playersData and selectedItem
+        return VotingItemsView(playersData: PlayersData.shared, selectedItem: sampleItem, playerRole: samplePlayerRole)
+
     }
 }
+

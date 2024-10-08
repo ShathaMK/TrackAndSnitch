@@ -1,10 +1,12 @@
 import SwiftUI
 
 struct VotingRevealItems: View {
+    @State var mostVotedPlayerRole: String // Store the most voted player's role
+
     // Constant list of colors to cycle through
     let iconColors = [Color(hex: 0xA32B38), Color(hex: 0xD16B59), Color(hex: 0x8DAD73)]
     
- //   @EnvironmentObject var playersData: PlayersData // Access PlayersData from the environment
+    @ObservedObject var playersData = PlayersData.shared // Access the singleton
 
     // Data passed from the previous voting page
     let itemsVotes: [(item: String, votes: Int)] // List of items and their vote counts
@@ -25,7 +27,7 @@ struct VotingRevealItems: View {
     }
     
     var body: some View {
-      //  NavigationView {
+       NavigationView {
             ZStack {
                 Image("bgpaper")
                     .resizable()
@@ -79,20 +81,30 @@ struct VotingRevealItems: View {
                     Spacer()
                     
                     // Navigation link to the player vote reveal page
-               /*     NavigationLink(destination: VotingReveal()) { // No need to pass data
-                        Text("See Player Votes")
+//                    NavigationLink(destination: WinnersView(playerRole: mostVotedPlayerRole)) { // <-- Modified here
+//                        Text("Show Player's Vote")
+//                            .font(.title2)
+//                            .padding()
+//                            .background(Color(hex: 0x6B4E45))
+//                            .foregroundColor(.white)
+//                            .cornerRadius(10)
+//                    }
+                    
+                    NavigationLink(destination: VotingView(playersData: playersData)) { // <-- Modified here
+                        Text("Show Player's Vote")
                             .font(.title2)
                             .padding()
                             .background(Color(hex: 0x6B4E45))
                             .foregroundColor(.white)
                             .cornerRadius(10)
-                    } */
+                    }
+
                     .padding()
                     
                     Spacer()
                 }
             }
-      //  }// end of navigation view
+        }// end of navigation view
 
     }
 }
@@ -100,15 +112,16 @@ struct VotingRevealItems: View {
 struct VotingRevealItems_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView { // Added this to allow NavigationLink to work
-            VotingRevealItems(itemsVotes: [("Item 1", 5), ("Item 2", 3), ("Item 3", 0)]) // Sample data
+            VotingRevealItems(mostVotedPlayerRole: "Thief", itemsVotes: [("Item 1", 5), ("Item 2", 3), ("Item 3", 0)])
         }
     }
 }
 
 
-#Preview {
-    VotingRevealItems(itemsVotes: [])
-}
+
+//#Preview {
+//    VotingRevealItems(itemsVotes: [])
+//}
 
 
 /**                        NavigationLink(destination: VotingItemsView(playersData: playersData).navigationBarBackButtonHidden(true), isActive: .constant(votingCompleted)) {

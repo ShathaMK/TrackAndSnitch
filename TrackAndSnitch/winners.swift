@@ -8,7 +8,7 @@ struct WinnersView: View {
     @State private var counter = 0
     @State private var player: AVPlayer? = nil
     @State private var playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"] // Example player names
-    var mostVotedPlayerRole: String? // Add this line
+    var mostVotedPlayerRole: String? // this var is where the winner's role
     var playerRole: String // Accept the player role as a parameter
 
 

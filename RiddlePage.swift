@@ -28,6 +28,8 @@ struct RiddleFront: View {
 }
 
 struct RiddlePage: View {
+    let playerRole: String // Player role to be passed to WinnersView
+
     @ObservedObject var playersData = PlayersData.shared  // Access PlayersData from the environment
     @State var selectedItem: Item // The selected item passed from the previous view
 
@@ -44,7 +46,7 @@ struct RiddlePage: View {
     // The duration and delay of the flip animation
     let durationAndDelay: CGFloat = 0.3
     // Timer variables
-    @State private var timeRemaining = 5
+    @State private var timeRemaining = 180
     @State private var currentRiddleIndex: Int = 0
     @State private var isActive = true
     @State private var currentRiddles: [String] = []
@@ -160,7 +162,7 @@ struct RiddlePage: View {
             .background(
                 // NavigationLink to navigate programmatically
                 NavigationLink(
-                    destination: VotingItemsView(selectedItem: selectedItem),
+                    destination: VotingItemsView(selectedItem: selectedItem, playerRole: playerRole),
                     isActive: $navigateToVoting
                 ) {
                     EmptyView()
@@ -226,8 +228,9 @@ struct RiddlePage_Previews: PreviewProvider {
     static var previews: some View {
         let sampleItem = Item(
             name: "Sample Item",
-            riddles: ["Riddle 1", "Riddle 2", "Riddle 3"]
+            riddles: ["Riddle 1", "Riddle 2"]
         )
+        
         // Initialize PlayerRoleStorage with sample roles
         PlayerRoleStorage.shared.saveRoles([
             ("Player 1", "Tracker"),
@@ -235,8 +238,10 @@ struct RiddlePage_Previews: PreviewProvider {
             ("Player 3", "Tracker"),
             ("Player 4", "Trickster")
         ])
-        // Populate PlayersData.shared.playersNames
-        PlayersData.shared.playersNames = PlayerRoleStorage.shared.getRoles().map { $0.0 }
-        return RiddlePage(selectedItem: sampleItem)
+        
+        // Retrieve a specific playerRole (e.g., Player 1's role)
+        let samplePlayerRole = "Thief"
+        
+        return RiddlePage(playerRole: samplePlayerRole, playersData: PlayersData.shared, selectedItem: sampleItem)
     }
 }
