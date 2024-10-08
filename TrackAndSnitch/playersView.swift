@@ -8,7 +8,9 @@
 import SwiftUI
 
 class PlayersData: ObservableObject {
-    @Published var playersNames: [String] = []
+    @Published var playersNames: [String] = [] // Players names
+//    @Published var playerVotes: [Int] = [] // Votes corresponding to players
+//        @Published var itemVotes: [Int] = [] // Votes corresponding to items
 }
 
 struct playersView: View {

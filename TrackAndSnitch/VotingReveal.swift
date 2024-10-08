@@ -1,11 +1,15 @@
 import SwiftUI
 
 struct VotingReveal: View {
-    // constant list of colors to cycle through
+    
+    @ObservedObject var playersData: PlayersData // Access the shared PlayersData
+    let playersVotes: [(name: String, votes: Int)] // List of players and their vote counts
+
+    // Constant list of colors to cycle through
     let iconColors = [Color(hex: 0x6B4E45), Color(hex: 0xA32B38), Color(hex: 0xD16B59), Color(hex: 0x8DAD73)]
     
     // Data passed from the previous voting page
-    let playersVotes: [(name: String, votes: Int)] // List of players and their vote counts
+   // let playersVotes: [(name: String, votes: Int)] // List of players and their vote counts
     
     // Determine the player with the most votes
     var mostVotedPlayer: (name: String, votes: Int)? {
@@ -16,7 +20,7 @@ struct VotingReveal: View {
         playersVotes.map { $0.votes }.max() ?? 1
     }
     
-    // function to loop through the theme colors for the player's icons
+    // Function to loop through the theme colors for the player's icons
     func colorForPlayer(at index: Int) -> Color {
         return iconColors[index % iconColors.count] // Cycle through colors using modulo
     }
@@ -31,18 +35,20 @@ struct VotingReveal: View {
             VStack(spacing: 5) {
                 // Title
                 Text("Vote Reveal")
-                    .font(.largeTitle)
+                    .font(.title)
                     .fontWeight(.bold)
                     .foregroundColor(Color(hex: 0x6B4E45))
+                    .padding(.top, 20)
                 
                 Text("and the most voted player(s) is...")
-                    .font(.title2)
+                    .font(.title3)
                     .foregroundColor(Color(hex: 0x6B4E45))
                     .bold()
                 
                 // Display the vote counts for each player
                 List {
-                    ForEach(Array(playersVotes.enumerated()), id: \.element.name) { index, player in
+                    ForEach(playersVotes.indices, id: \.self) { index in
+                        let player = playersVotes[index]
                         HStack {
                             // Player's name
                             Text(player.name)
@@ -66,18 +72,22 @@ struct VotingReveal: View {
                                 .foregroundColor(Color(hex: 0x6B4E45))
                                 .bold()
                         }
-                        .padding(.vertical, 10)
+                        .padding(.vertical, 20)
                     }
                     .listRowBackground(Color(hex: 0xFCF4E8)) // Change list's row color
+                    
                 }
                 .scrollContentBackground(.hidden) // Hide background of the list
+                .padding(.horizontal, 15)
+
                 
-                Spacer()
+                
+             //   Spacer()
                 
                 // Continue Button
                 Button(action: { print("Continue to the next page") }) {
                     Text("Continue")
-                        .font(.title2)
+                        .font(.title3)
                         .padding()
                         .background(Color(hex: 0x6B4E45))
                         .cornerRadius(10)
@@ -90,13 +100,16 @@ struct VotingReveal: View {
     }
 }
 
+
 struct VotingReveal_Previews: PreviewProvider {
     static var previews: some View {
-        // Sample data for preview
-        VotingReveal(playersVotes: [("Player 1", 2), ("Player 2", 1), ("Player 3", 3), ("Player 4", 1), ("Player 5", 3), ("Player 6", 1), ("Player 7", 3), ("Player 8", 3), ("Player 9", 3), ("Player 10", 3)])
+        let samplePlayersData = PlayersData()
+        samplePlayersData.playersNames = ["Player 1", "Player 2", "Player 3", "Player 4"] // Sample names
+        
+        // Sample player votes (you can customize this to test different scenarios)
+        let samplePlayersVotes = [("Player 1", 2), ("Player 2", 1), ("Player 3", 3), ("Player 4", 1)]
+        
+        return VotingReveal(playersData: samplePlayersData, playersVotes: samplePlayersVotes)
     }
 }
 
-#Preview {
-    VotingReveal(playersVotes: [])
-}

@@ -9,6 +9,8 @@ struct VotingItemsView: View {
     @State var votes: [String: String] = [:]      // Dictionary to store votes (player -> item)
     @State var votingCompleted = false            // Track if voting is completed
     @State var csvDataLoaded = false              // Track if the CSV has been loaded
+    @State var navigateToItemReveal = false  // For navigation to ItemVoteReveal view
+
     
     var body: some View {
 NavigationView {
@@ -60,8 +62,9 @@ NavigationView {
                                     self.selectedItemIndex = nil  // Reset selection for next player
                                 } else {
                                     votingCompleted = true  // All players have voted
+                                    navigateToItemReveal = true  // Trigger navigation to item reveal view
                                 }
-                            } // end of if
+                            }
                         }) {
                             Text(currentVoterIndex >= playersData.playersNames.count - 1 ? "Reveal Votes!" : "Continue")
                                 .padding()
@@ -70,8 +73,9 @@ NavigationView {
                                 .cornerRadius(10)
                         }
                         .disabled(selectedItemIndex == nil)  // Disable until an item is selected
+
                         // end of button
-                    } else {
+                    } /* else {
                         Text("Voting completed!")
                             .font(.title)
                             .padding()
@@ -90,7 +94,7 @@ NavigationView {
                         Text("Correct answer: \(correctAnswer ?? "")")
                             .font(.headline)
                             .padding(.top)
-                    } // end of if else
+                    } // end of if else */
                 } else {
                     Text("Loading voting items...")
                 } // end of it and else
@@ -99,11 +103,39 @@ NavigationView {
                 loadItemsFromCSV()
             }
             .padding()
+            // yhis is correct, come back later. we want to connect this page with player voting reveal
+           NavigationLink(destination: VotingRevealItems(
+            itemsVotes: calculateItemVotes(votes: votes)).navigationBarBackButtonHidden(true),
+                           isActive: $navigateToItemReveal) {
+                EmptyView() // This ensures we only navigate when the button triggers it
+            }
+            
+//VotingReveal
+
         } // end of ZStack
         
     } // end of nav view
     
     } // end of body
+    
+    
+    func calculateItemVotes(votes: [String: String]) -> [(item: String, votes: Int)] {
+        var itemVoteCount: [String: Int] = [:]
+        
+        // Count the votes for each item
+        for (_, item) in votes {
+            itemVoteCount[item, default: 0] += 1
+        }
+        
+        // Ensure all items are included even if they have zero votes
+        for item in items {
+            _ = itemVoteCount[item, default: 0] // Accessing it to ensure it's counted
+        }
+
+        // Convert the dictionary into an array of tuples
+        return itemVoteCount.map { (item: $0.key, votes: $0.value) }
+    }
+
     
     
     // Function to load items from the CSV file
@@ -160,7 +192,7 @@ NavigationView {
 struct VotingItemsView_Previews: PreviewProvider {
     static var previews: some View {
         let samplePlayersData = PlayersData()
-        samplePlayersData.playersNames = ["Player 1", "Player 2", "Player 3"]
+        samplePlayersData.playersNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
         return VotingItemsView(playersData: samplePlayersData)
     }
 }

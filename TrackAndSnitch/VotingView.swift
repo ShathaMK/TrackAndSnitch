@@ -3,12 +3,15 @@ import SwiftUI
 struct VotingView: View {
     
     @ObservedObject var playersData: PlayersData  // Receive the data from ContentView
+    @State private var playersVotes: [(String, Int)] = [] //to save the palyers names with their votes
     
     @State private var selectedPlayerIndex: Int? = nil // Track selected player for the vote
     @State private var votes: [Int] = Array(repeating: 0, count: 10) // Array to track votes for each player
     @State private var currentVoterIndex: Int = 0 // Track which player is voting
     @State private var votingCompleted = false // Track if voting is completed
     @State private var tiePlayers: [String] = [] // Holds the players who tied, if any
+   // @State private var navigateToReveal = false  // Trigger navigation
+
 
     var body: some View {
         NavigationStack {
@@ -57,7 +60,7 @@ struct VotingView: View {
                                 selectedPlayerIndex = nil // Reset selection for the next voter
                             }
                         }) {
-                            Text(currentVoterIndex >= playersData.playersNames.count - 1 ? "Find Stolen Item!" : "Continue")
+                            Text(currentVoterIndex >= playersData.playersNames.count - 1 ? "Catch the thief!" : "Continue")
                                 .padding()
                                 .background(selectedPlayerIndex != nil ? Color(hex: 0x6B4E45) : Color.gray)
                                 .foregroundColor(.white)
@@ -65,27 +68,39 @@ struct VotingView: View {
                         }
                         .disabled(selectedPlayerIndex == nil) // Disable button if no selection
                     } //else {
-                        // If voting is completed, navigate to results
-                        NavigationLink(destination: VotingItemsView(playersData: playersData).navigationBarBackButtonHidden(true), isActive: .constant(votingCompleted)) {
+                   
+                    // Navigate to the VotingReveal view when voting is completed
+                    NavigationLink(
+                        destination: VotingReveal(playersData: playersData, playersVotes: playersVotes).navigationBarBackButtonHidden(true), isActive: .constant(votingCompleted)
+                    ) {
+                        EmptyView()
+                    }
+
+                    
+                    // If voting is completed, navigate to results
+                    /*    NavigationLink(destination: VotingItemsView(playersData: playersData).navigationBarBackButtonHidden(true), isActive: .constant(votingCompleted)) {
                             EmptyView() // This is required to make NavigationLink work with isActive
-                        } // end of nav link
+                        } // end of nav link */
                    // } // end of else
+                    
                 } // end of VStack
-                .navigationBarBackButtonHidden(true) // remove the back button
                 .padding()
             } // end of ZStack
         } // end of NavigationStack
     } // end of body
 
     func showResults() {
-        // Calculate results
+        // Combine player names and votes into an array of tuples
+        playersVotes = zip(playersData.playersNames, votes).map { ($0, $1) }
+
+        // Calculate if there's a tie
         let maxVotes = votes.max() ?? 0
         let mostVotedPlayers = playersData.playersNames.indices.filter { votes[$0] == maxVotes }
-        
+
         if mostVotedPlayers.count > 1 {
-            tiePlayers = mostVotedPlayers.map { playersData.playersNames[$0] } // Handle tie
+            tiePlayers = mostVotedPlayers.map { playersData.playersNames[$0] }
         }
-    }
+    } // end of function
 }
 
 struct VotingView_Previews: PreviewProvider {

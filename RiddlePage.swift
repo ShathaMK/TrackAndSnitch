@@ -37,7 +37,7 @@ struct RiddleFront: View {
 
 struct RiddlePage: View {
     // Accept selectedItem as a parameter
-    let selectedItem: Item
+    @State var selectedItem: Item // made it a state var instead of let
 
     // The degree of rotation for the back of the card
     @State var backDegree = 0.0
