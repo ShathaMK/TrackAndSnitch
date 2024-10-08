@@ -26,15 +26,15 @@ struct ContentView: View {
                     // Information icon in the top-right corner
                     HStack {
                         Spacer()
-                        Button(action: {
-                            showingInstructions.toggle() // Show instructions when tapped
-                        }) {
-                            Image(systemName: "info.circle")
-                                .font(.system(size: 24))
-                                .foregroundColor(.white)
-                                .padding(.trailing, 40)
-                                .padding(.top, 20)
-                        }
+//                        Button(action: {
+//                            showingInstructions.toggle() // Show instructions when tapped
+//                        }) {
+//                            Image(systemName: "info.circle")
+//                                .font(.system(size: 24))
+//                                .foregroundColor(.white)
+//                                .padding(.trailing, 40)
+//                                .padding(.top, 20)
+//                        }
                     }
                     
                     // ZStack for stars behind the title
@@ -165,15 +165,15 @@ struct ContentView: View {
                             .animation(.easeInOut(duration: 1.5).repeatForever(), value: shine)
                             .offset(x: 50, y: -100)
                     }
+                    .padding(.top, 70)
                     
                     .frame(height: 200) // Restrict the star area to the top
                     
                     Text("WELCOME \nTO \n SNEAK OR SEEK")
-                        .font(.largeTitle)
-                        .fontWeight(.heavy)
                         .multilineTextAlignment(.center)
-                        .padding(.top, 40)
+                        .padding(.top, 80)
                         .foregroundColor(Color(red: 0.975, green: 0.916, blue: 0.817))
+                        .font(.system(size: 36, weight: .heavy, design: .rounded))
                     
                     Spacer()
                     
@@ -192,7 +192,7 @@ struct ContentView: View {
                     // Start Button with NavigationLink
                     NavigationLink(destination: GameInstructions()) { // Navigate to GameInstructions when tapped
                         Text("Start")
-                            .font(.title2)
+                            .font(.system(size: 22, weight: .regular, design: .rounded))
                             .frame(width: 150, height: 50)
                             .background(buttonColor)
                             .cornerRadius(10)
