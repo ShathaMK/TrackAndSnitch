@@ -12,8 +12,11 @@ struct VotingItemsView: View {
     @State var votingCompleted = false // Track if voting is completed
     @State var csvDataLoaded = false // Track if the CSV has been loaded
     @State private var showVotingCompleteAlert = false // For showing alert after voting
+    @State var navigateToItemReveal = false  // For navigation to ItemVoteReveal view
+
 
     var body: some View {
+NavigationView {
         ZStack {
             Image("bgpaper")
                 .resizable()
@@ -79,24 +82,24 @@ struct VotingItemsView: View {
                             }
                             .disabled(selectedItemIndex == nil)  // Disable until an item is selected
                             .padding(.horizontal, 20)
-                            .alert(isPresented: $showVotingCompleteAlert) {
+                           /* .alert(isPresented: $showVotingCompleteAlert) {
                                 Alert(
                                     title: Text("Voting Completed"),
                                     message: Text("All players have voted."),
                                     dismissButton: .default(Text("OK"))
                                 )
-                            }
+                            }*/
                         } else {
                             // Handle out-of-range access
                             Text("Error: No player available for voting.")
                                 .foregroundColor(.red)
                         }
-                    } else {
-                        // Optional: Additional UI when voting is completed
-                        Text("Voting Completed!")
-                            .font(.title)
-                            .padding()
-                    }
+                    } /*else {
+                       // Optional: Additional UI when voting is completed
+                       Text("Voting Completed!")
+                       .font(.title)
+                       .padding()
+                       }*/
                 } else {
                     Text("Loading voting items...")
                 }
@@ -113,7 +116,13 @@ struct VotingItemsView: View {
                 }
             }
             .padding()
+            NavigationLink(destination: VotingRevealItems(
+                itemsVotes: calculateItemVotes(votes: votes)).navigationBarBackButtonHidden(true),
+                           isActive: $navigateToItemReveal) {
+                EmptyView() // This ensures we only navigate when the button triggers it
+            }
         } // End of ZStack
+    } // end of nav view
     } // End of body
 
     // Function to calculate item votes
