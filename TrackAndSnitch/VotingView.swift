@@ -13,6 +13,8 @@ struct VotingView: View {
    // @State private var navigateToReveal = false  // Trigger navigation
     @State private var navigateToThiefScreen = false // Navigate if a thief wins
     @State private var navigateToTrackerScreen = false // Navigate if other role wins
+    @State private var mostVotedPlayerRole: String? = nil // Store the most voted player's role
+
 
 
     var body: some View {
@@ -73,14 +75,22 @@ struct VotingView: View {
                    
                     //THIS IS WORKING BUT WE NEED TO PASS THR ROLES AS WELL
                     // Navigate to the VotingReveal view when voting is completed
-                /*    NavigationLink(
+                   /* NavigationLink(
                         destination: VotingReveal(playersData: playersData, playersVotes: playersVotes).navigationBarBackButtonHidden(true), isActive: .constant(votingCompleted)
                     ) {
                         EmptyView()
-                    } */
+                    }*/
+                    
+                    NavigationLink(
+                        destination: VotingReveal(playersData: playersData, playersVotes: playersVotes, mostVotedPlayerRole: mostVotedPlayerRole ?? "").navigationBarBackButtonHidden(true),
+                        isActive: .constant(votingCompleted)
+                    ) {
+                        EmptyView()
+                    }
+
                     
                     // Navigate based on the role of the player with most votes
-                        
+                     /*
                     NavigationLink(
                         destination: WinnersView(), // Screen to navigate if the thief wins
                              isActive: $navigateToThiefScreen
@@ -93,7 +103,7 @@ struct VotingView: View {
                              isActive: $navigateToTrackerScreen // edit the destination here later
                          ) {
                              EmptyView()
-                         }
+                         }*/
                     
                     // If voting is completed, navigate to results
                     /*    NavigationLink(destination: VotingItemsView(playersData: playersData).navigationBarBackButtonHidden(true), isActive: .constant(votingCompleted)) {
@@ -120,12 +130,16 @@ struct VotingView: View {
         let playerRoles = PlayerRoleStorage.shared.getRoles() // Retrieve saved roles
         let roleOfMostVotedPlayer = playerRoles.first { $0.0 == mostVotedPlayer }?.1
         
+        // Retrieve the role of the most voted player
+        mostVotedPlayerRole = playerRoles.first { $0.0 == mostVotedPlayer }?.1
+
         // Navigate based on the role
         if roleOfMostVotedPlayer == "Thief" {
             navigateToThiefScreen = true
         } else {
             navigateToTrackerScreen = true
         }
+        
     } // end of function
 }
 
@@ -137,3 +151,5 @@ struct VotingView_Previews: PreviewProvider {
         return VotingView(playersData: samplePlayersData) // Provide the playersData argument
     }
 }
+
+

@@ -25,7 +25,7 @@ struct VotingRevealItems: View {
     }
     
     var body: some View {
-        NavigationView {
+      //  NavigationView {
             ZStack {
                 Image("bgpaper")
                     .resizable()
@@ -92,7 +92,7 @@ struct VotingRevealItems: View {
                     Spacer()
                 }
             }
-        }// end of navigation view
+      //  }// end of navigation view
 
     }
 }
