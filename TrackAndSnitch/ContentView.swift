@@ -1,3 +1,9 @@
+//
+//  ContentView.swift
+//  TrackAndSnitch
+//
+//  Created by Whyyy on 06/10/2024.
+//
 import SwiftUI
 
 struct ContentView: View {
