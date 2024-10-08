@@ -106,7 +106,8 @@ NavigationView {
             .padding()
          
             NavigationLink(destination: VotingRevealItems(
-                mostVotedPlayerRole: playerRole, // Pass the correct parameter
+                mostVotedPlayerRole: playerRole,
+                selectedItem: selectedItem, // Pass the correct parameter
                 itemsVotes: calculateItemVotes(votes: votes) // Ensure this returns [(String, Int)]
             ).navigationBarBackButtonHidden(true),
             isActive: $navigateToItemReveal) {
@@ -116,6 +117,7 @@ NavigationView {
 
         } // End of ZStack
     } // end of nav view
+.navigationBarBackButtonHidden(true)
     } // End of body
 
     // Function to calculate item votes

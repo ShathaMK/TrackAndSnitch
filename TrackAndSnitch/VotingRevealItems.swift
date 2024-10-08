@@ -2,6 +2,7 @@ import SwiftUI
 
 struct VotingRevealItems: View {
     @State var mostVotedPlayerRole: String // Store the most voted player's role
+    let selectedItem: Item  // let selectedItem: Item
 
     // Constant list of colors to cycle through
     let iconColors = [Color(hex: 0xA32B38), Color(hex: 0xD16B59), Color(hex: 0x8DAD73)]
@@ -41,9 +42,13 @@ struct VotingRevealItems: View {
                         .fontWeight(.bold)
                         .foregroundColor(Color(hex: 0x6B4E45))
                     
-                    Text("and the most voted item(s) is...")
+                    Spacer()
+                    Spacer()
+                    
+                    Text("The Correct item is: \n\(selectedItem.name)")
                         .font(.title2)
                         .foregroundColor(Color(hex: 0x6B4E45))
+                        .multilineTextAlignment(.center)
                         .bold()
                     
                     // Display the vote counts for each item
@@ -80,18 +85,14 @@ struct VotingRevealItems: View {
                     
                     Spacer()
                     
-                    // Navigation link to the player vote reveal page
-//                    NavigationLink(destination: WinnersView(playerRole: mostVotedPlayerRole)) { // <-- Modified here
-//                        Text("Show Player's Vote")
-//                            .font(.title2)
-//                            .padding()
-//                            .background(Color(hex: 0x6B4E45))
-//                            .foregroundColor(.white)
-//                            .cornerRadius(10)
-//                    }
+                        .font(.title2)
+                        .background(Color(hex: 0x6B4E45))
+                        .padding()
                     
-                    NavigationLink(destination: VotingView(playersData: playersData)) { // <-- Modified here
-                        Text("Show Player's Vote")
+                    
+                    NavigationLink(destination: VotingView(playersData: playersData)
+                        .navigationBarBackButtonHidden(true)) { // <-- Modified here
+                        Text("Find the Thief")
                             .font(.title2)
                             .padding()
                             .background(Color(hex: 0x6B4E45))
@@ -112,11 +113,16 @@ struct VotingRevealItems: View {
 struct VotingRevealItems_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView { // Added this to allow NavigationLink to work
-            VotingRevealItems(mostVotedPlayerRole: "Thief", itemsVotes: [("Item 1", 5), ("Item 2", 3), ("Item 3", 0)])
+            
+            let sampleItem = Item(
+                name: "Sample Item",
+                riddles: ["Riddle 1", "Riddle 2"]
+            )
+            
+            VotingRevealItems(mostVotedPlayerRole: "Thief", selectedItem: sampleItem, itemsVotes: [("Item 1", 5), ("Item 2", 3), ("Item 3", 0)])
         }
     }
 }
-
 
 
 //#Preview {

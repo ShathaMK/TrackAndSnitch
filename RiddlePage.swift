@@ -46,7 +46,7 @@ struct RiddlePage: View {
     // The duration and delay of the flip animation
     let durationAndDelay: CGFloat = 0.3
     // Timer variables
-    @State private var timeRemaining = 180
+    @State private var timeRemaining = 10
     @State private var currentRiddleIndex: Int = 0
     @State private var isActive = true
     @State private var currentRiddles: [String] = []
@@ -58,7 +58,7 @@ struct RiddlePage: View {
     @State private var navigateToVoting = false
 
     var body: some View {
-        NavigationView { // Ensure there's a NavigationView to handle navigation
+//        NavigationView { // Ensure there's a NavigationView to handle navigation
             ZStack {
                 // Background color
                 Color(hex: 0xE9DFCF).ignoresSafeArea()
@@ -168,7 +168,7 @@ struct RiddlePage: View {
                     EmptyView()
                 }
             )
-        } // End of NavigationView
+//        } // End of NavigationView
     }
 
     func convertSecondsToTime(timeInSeconds: Int) -> String {

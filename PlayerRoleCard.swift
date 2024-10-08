@@ -471,7 +471,7 @@ struct PlayerRoleCard: View {
                         .navigationDestination(isPresented: $allRolesAssigned) {
                             RiddlePage(
                                 playerRole: mostVotedPlayerRole, selectedItem: selectedItem // Pass playerRole here
-                            )
+                            ).navigationBarBackButtonHidden(true)
                         }
                 }
             }
