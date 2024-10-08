@@ -11,8 +11,10 @@ import SwiftUI
 struct TrackAndSnitchApp: App {
     var body: some Scene {
         WindowGroup {
-            GameView() // Start the app from GameView
-            
+            NavigationStack {
+                ContentView() // Your root view
+                    .navigationBarHidden(true) // Hide the navigation bar if needed
+            }
         }
     }
 }

@@ -152,22 +152,35 @@ struct Objective: View {
 struct Winning: View {
     var body: some View {
         InstructionCardView(title: "Winning", iconName: "trophy.circle") {
-            Text("The Catchers win if they correctly guess the stolen object and identify the thief.\n\nThe Thief & Helper win if the catchers fail to correctly guess both the stolen object and the thief.")
-                .font(.system(size: 22, weight: .regular, design: .rounded))
-                .multilineTextAlignment(.center)
-                .foregroundColor(Color(red: 0.42, green: 0.34, blue: 0.28))
+            VStack {
+                Text("The Catchers win if they correctly guess the stolen object and identify the thief.\n\nThe Thief & Helper win if the catchers fail to correctly guess both the stolen object and the thief.")
+                    .font(.system(size: 22, weight: .regular, design: .rounded))
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(Color(red: 0.42, green: 0.34, blue: 0.28))
+                
+                NavigationLink(destination: SplashScreen()){
+                    Text("Play")
+                        .font(.system(size: 22, design: .rounded))
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(Color(red: 0.41, green: 0.31, blue: 0.26))
+                        .foregroundColor(.white)
+                        .cornerRadius(15)
+                        .padding(.horizontal, 40)
+                        .padding(.top, 20)
+                }
+            }
         }
     }
 }
-
 // ---------------------------------- Game Instructions Main View ----------------------------------
 
 struct GameInstructions: View {
     var body: some View {
         ZStack{
-        
+
             // Background Image
-            Image("bg")
+            Image("BackgroundImage")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
@@ -188,6 +201,7 @@ struct GameInstructions: View {
                 UIPageControl.appearance().pageIndicatorTintColor = UIColor(Color(red: 0.42, green: 0.34, blue: 0.28).opacity(0.5)) // Inactive page color
             }
         }
+//        .navigationBarBackButtonHidden(true)
     }
 }
 

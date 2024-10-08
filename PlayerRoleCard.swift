@@ -95,23 +95,24 @@ func readCSV(fileName: String) -> [Item] {
 }
 
 // Function to create players
-func createPlayers(numberOfPlayers: Int) -> (players: [Player], selectedItem: Item)? {
-
-    // Generate player names
-    var playerNames: [String] = []
-    for i in 1...numberOfPlayers {
-        playerNames.append("Player \(i)")
-    }
-
+func createPlayers(playerNames: [String]) -> (players: [Player], selectedItem: Item)? {
+    let numberOfPlayers = playerNames.count
+    //
+    //    // Generate player names
+    //    var playerNames: [String] = []
+    //    for i in 1...numberOfPlayers {
+    //        playerNames.append("Player \(i)")
+    //    }
+    
     // Read items and riddles from db7.csv
     let items = readCSV(fileName: "db7")
-
+    
     // Check if items are available
     guard !items.isEmpty else {
         print("No items found in db7.csv")
         return nil
     }
-
+    
     // Randomly select an item
     let selectedItem = items.randomElement()!
     
@@ -120,20 +121,20 @@ func createPlayers(numberOfPlayers: Int) -> (players: [Player], selectedItem: It
         ("Tracker", "Trackers_"),
         ("\n\n\n\n\n\nThief", "Thief_")
     ]
-
+    
     let rolesFor3Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("\n\n\n\n\n\nThief", "Thief_")
     ]
-
+    
     let rolesFor4Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("\n\n\n\n\n\nThief", "Thief_")
     ]
-
+    
     let rolesFor5Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
@@ -141,7 +142,7 @@ func createPlayers(numberOfPlayers: Int) -> (players: [Player], selectedItem: It
         ("\n\n\n\n\n\nThief", "Thief_"),
         ("Trickster", "Trickster_")
     ]
-
+    
     let rolesFor6Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
@@ -150,7 +151,7 @@ func createPlayers(numberOfPlayers: Int) -> (players: [Player], selectedItem: It
         ("\n\n\n\n\n\nThief", "Thief_"),
         ("Trickster", "Trickster_")
     ]
-
+    
     let rolesFor7Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
@@ -160,7 +161,7 @@ func createPlayers(numberOfPlayers: Int) -> (players: [Player], selectedItem: It
         ("\n\n\n\n\n\nThief", "Thief_"),
         ("Trickster", "Trickster_")
     ]
-
+    
     let rolesFor8Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
@@ -171,7 +172,7 @@ func createPlayers(numberOfPlayers: Int) -> (players: [Player], selectedItem: It
         ("\n\n\n\n\n\nThief", "Thief_"),
         ("Trickster", "Trickster_")
     ]
-
+    
     let rolesFor9Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
@@ -183,7 +184,7 @@ func createPlayers(numberOfPlayers: Int) -> (players: [Player], selectedItem: It
         ("\n\n\n\n\n\nThief", "Thief_"),
         ("Trickster", "Trickster_")
     ]
-
+    
     let rolesFor10Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
@@ -196,7 +197,7 @@ func createPlayers(numberOfPlayers: Int) -> (players: [Player], selectedItem: It
         ("\n\n\n\n\n\nThief", "Thief_"),
         ("Trickster", "Trickster_")
     ]
-
+    
     // Assemble the roles array
     let rolesArray: [RoleConfiguration] = [
         rolesFor2Players,
@@ -209,21 +210,21 @@ func createPlayers(numberOfPlayers: Int) -> (players: [Player], selectedItem: It
         rolesFor9Players,
         rolesFor10Players
     ]
-
+    
     // Ensure valid number of players
     guard numberOfPlayers >= 2, numberOfPlayers <= rolesArray.count + 2 else {
         print("Invalid number of players. Must be between 2 and \(rolesArray.count + 2).")
         return nil
     }
-
+    
     // Get the roles for the current number of players
     let assignedRoles = rolesArray[numberOfPlayers - 2] // Get the roles for the current number of players
-
+    
     // Shuffle the roles before assigning them to players
     let shuffledRoles = assignedRoles.shuffled()
-
+    
     var players: [Player] = []
-
+    
     for (index, name) in playerNames.enumerated() {
         if index < shuffledRoles.count {
             let role = shuffledRoles[index]
@@ -233,9 +234,10 @@ func createPlayers(numberOfPlayers: Int) -> (players: [Player], selectedItem: It
             players.append(Player(name: name, cardImage: "Trackers_", title: "Tracker"))
         }
     }
-
+    
     return (players, selectedItem)
 }
+
 
 // Player model
 struct Player {
@@ -409,7 +411,6 @@ struct PlayerRoleCard: View {
                                     Text("\(currentPlayer.title)\nThe Thief is: \(thief.name)")
                                         .font(.title)
                                         .multilineTextAlignment(.center)
-                                        .padding()
                                 } else {
                                     Text(currentPlayer.title)
                                         .font(.title)
@@ -419,7 +420,6 @@ struct PlayerRoleCard: View {
                                     Text("\(currentPlayer.title)\nItem stolen: \(selectedItem.name)")
                                         .font(.title)
                                         .multilineTextAlignment(.center)
-                                        .padding()
                                 } else {
                                     Text(currentPlayer.title) // Show title of the card
                                         .font(.title)
@@ -466,8 +466,8 @@ struct PlayerRoleCard: View {
 struct GameView: View {
     var gameData: (players: [Player], selectedItem: Item)?
     
-    init() {
-        self.gameData = createPlayers(numberOfPlayers: 6) // Adjust the number of players as needed
+    init(playerNames: [String]) {
+        self.gameData = createPlayers(playerNames: playerNames)
     }
     
     var body: some View {
@@ -480,9 +480,13 @@ struct GameView: View {
     }
 }
 
-// Preview
-struct GameView_Previews: PreviewProvider {
-    static var previews: some View {
-        GameView()
-    }
+#Preview {
+    GameView(playerNames: ["Player 1", "Player 2", "Player 3", "Player 4"])
 }
+
+//// Preview
+//struct GameView_Previews: PreviewProvider {
+//    static var previews: some View {
+//        GameView()
+//    }
+//}
