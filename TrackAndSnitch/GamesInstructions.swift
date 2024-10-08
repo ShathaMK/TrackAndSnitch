@@ -126,7 +126,7 @@ struct RolesItem: View {
 struct Rounds: View {
     var body: some View {
         InstructionCardView(title: "Rounds", iconName: "arrowshape.forward.circle") {
-            Text("After finiishing the round guess the stolen object by solving riddles. Vote on who you think the thief is based on the answers and riddles.")
+            Text("After finishing the round guess the stolen object by solving riddles. Vote on who you think the thief is based on the answers and riddles.")
                 .font(.system(size: 22, weight: .regular, design: .rounded))
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0.42, green: 0.34, blue: 0.28))
@@ -139,7 +139,7 @@ struct Rounds: View {
 struct Objective: View {
     var body: some View {
         InstructionCardView(title: "Objective", iconName: "target") {
-            Text("The catchers must first guess the stolen object based on the riddles. Then, they try to identify the thief through the responses and clues gathered during the game.")
+            Text("The Trackers must first guess the stolen object based on the riddles. Then, they try to identify the thief through the responses and clues gathered during the game.")
                 .font(.system(size: 22, weight: .regular, design: .rounded))
                 .multilineTextAlignment(.center)
                 .foregroundColor(Color(red: 0.42, green: 0.34, blue: 0.28))
@@ -153,7 +153,7 @@ struct Winning: View {
     var body: some View {
         InstructionCardView(title: "Winning", iconName: "trophy.circle") {
             VStack {
-                Text("The Catchers win if they correctly guess the stolen object and identify the thief.\n\nThe Thief & Helper win if the catchers fail to correctly guess both the stolen object and the thief.")
+                Text("The Trackers win if they correctly guess the stolen object and identify the thief.\n\nThe Thief & Helper win if the catchers fail to correctly guess both the stolen object and the thief.")
                     .font(.system(size: 22, weight: .regular, design: .rounded))
                     .multilineTextAlignment(.center)
                     .foregroundColor(Color(red: 0.42, green: 0.34, blue: 0.28))
