@@ -10,62 +10,64 @@ struct WinnersView: View {
     let buttonColor = Color(UIColor(red: 107/255, green: 78/255, blue: 69/255, alpha: 1))
 
     var body: some View {
-        ZStack {
-            // Background Image
-            Image("BackgroundImage")
-                .resizable()
-                .scaledToFill()
-                .edgesIgnoringSafeArea(.all)
+        NavigationStack {  // Add NavigationStack for navigation
+            ZStack {
+                // Background Image
+                Image("BackgroundImage")
+                    .resizable()
+                    .scaledToFill()
+                    .edgesIgnoringSafeArea(.all)
 
-            // Main Content
-            VStack {
-                Text("Congrats! \nYou've caught the thief")
-                    .font(.headline)
-                    .fontWeight(.heavy)
-                    .multilineTextAlignment(.center)
-                    .padding(.top, 20)
-                    .foregroundColor(Color(red: 0.979, green: 0.92, blue: 0.829))
+                // Main Content
+                VStack {
+                    Text("Congrats! \nYou've caught the thief")
+                        .font(.headline)
+                        .fontWeight(.heavy)
+                        .multilineTextAlignment(.center)
+                        .padding(.top, 20)
+                        .foregroundColor(Color(red: 0.979, green: 0.92, blue: 0.829))
 
-                Spacer()
+                    Spacer()
 
-                // ZStack for the card views
-                ZStack {
-                    // Card Back
-                    CardBackW(width: 260, height: 400, degree: $degree)
-                        .opacity(flipped ? 0 : 1) // Fade out when flipped
+                    // ZStack for the card views
+                    ZStack {
+                        // Card Back
+                        CardBackW(width: 260, height: 400, degree: $degree)
+                            .opacity(flipped ? 0 : 1) // Fade out when flipped
 
-                    // Card Front
-                    CardFrontW(width: 260, height: 400, degree: $degree)
-                        .opacity(flipped ? 1 : 0) // Fade in when flipped
-                }
-                .rotation3DEffect(Angle(degrees: degree), axis: (x: 0, y: 1, z: 0)) // Apply rotation to both cards
-                .onTapGesture {
-                    flipCard()
-                    playSound()
-                }
-
-                Spacer()
-
-                HStack {
-                    Button("Play") {
-                        // Action for play
+                        // Card Front
+                        CardFrontW(width: 260, height: 400, degree: $degree)
+                            .opacity(flipped ? 1 : 0) // Fade in when flipped
                     }
-                    .padding()
-                    .background(buttonColor)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
-
-                    Button("Exit") {
-                        // Action for exit
+                    .rotation3DEffect(Angle(degrees: degree), axis: (x: 0, y: 1, z: 0)) // Apply rotation to both cards
+                    .onTapGesture {
+                        flipCard()
+                        playSound()
                     }
-                    .padding()
-                    .background(buttonColor)
-                    .foregroundColor(.white)
-                    .cornerRadius(10)
+
+                    Spacer()
+
+                    HStack {
+                        NavigationLink(destination: GameView()) {  // Navigate to GameView for "Play again"
+                            Text("Play again")
+                                .padding()
+                                .background(buttonColor)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+
+                        NavigationLink(destination: playersView()) {  // Navigate to playersView for "Change players"
+                            Text("Change players")
+                                .padding()
+                                .background(buttonColor)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                        }
+                    }
+                    .padding(.bottom, 20)
                 }
-                .padding(.bottom, 20)
+                .confettiCannon(counter: $counter, repetitions: 3, repetitionInterval: 0.5)
             }
-            .confettiCannon(counter: $counter, repetitions: 3, repetitionInterval: 0.5)
         }
     }
 
