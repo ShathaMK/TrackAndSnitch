@@ -27,10 +27,9 @@ struct RiddleFront: View {
     }
 }
 
-
 struct RiddlePage: View {
-    // Accept selectedItem as a parameter
-    @State var selectedItem: Item // made it a state var instead of let
+    @EnvironmentObject var playersData: PlayersData // Access PlayersData from the environment
+    @State var selectedItem: Item // The selected item passed from the previous view
 
     // The degree of rotation for the back of the card
     @State var backDegree = 0.0
@@ -45,13 +44,126 @@ struct RiddlePage: View {
     // The duration and delay of the flip animation
     let durationAndDelay: CGFloat = 0.3
     // Timer variables
-    @State private var timeRemaining = 180
+    @State private var timeRemaining = 10
     @State private var currentRiddleIndex: Int = 0
     @State private var isActive = true
     @State private var currentRiddles: [String] = []
 
     let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
     @Environment(\.scenePhase) var scenePhase
+
+    // New state variable for navigation
+    @State private var navigateToVoting = false
+
+    var body: some View {
+        NavigationView { // Ensure there's a NavigationView to handle navigation
+            ZStack {
+                // Background color
+                Color(hex: 0xE9DFCF).ignoresSafeArea()
+
+                VStack {
+                    Text("Round - 1")
+                        .font(.system(.title, design: .rounded))
+                        .fontWeight(.semibold)
+                        .padding(.top, 10)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.leading, 20)
+                        .padding(.bottom, 30)
+
+                    Text("⏳" + convertSecondsToTime(timeInSeconds: timeRemaining))
+                        .font(.title)
+                        .foregroundStyle(Color(hex: 0x902A39))
+                        .padding(.horizontal, 20)
+                        .padding(.vertical, 5)
+                        .background(Color(hex: 0xFFEEB3).opacity(0.45))
+                        .clipShape(Capsule())
+                        .overlay(
+                            Capsule()
+                                .stroke(Color(hex: 0xE1A86C), lineWidth: 1)
+                        )
+
+                    Spacer()
+
+                    // Card flip area
+                    ZStack {
+                        // Card Front
+                        if currentRiddleIndex < currentRiddles.count {
+                            RiddleFront(
+                                width: width,
+                                height: height,
+                                degree: $frontDegree,
+                                riddle: currentRiddles[currentRiddleIndex]
+                            )
+                        }
+
+                        // Card Back
+                        CardBack(width: width, height: height, degree: $backDegree)
+                    }
+                    .onTapGesture {
+                        flipCard()
+                    }
+
+                    Text("Here's a riddle")
+                        .font(.system(.callout, design: .rounded))
+                        .padding(.top, 25)
+
+                    Spacer()
+
+                    // Show "Next Riddle" button only if there are more riddles
+                    if currentRiddleIndex < currentRiddles.count - 1 {
+                        Button(action: {
+                            showNextRiddle()
+                        }) {
+                            Text("Next Riddle")
+                                .frame(width: 260, height: 45)
+                                .background(Color(hex: 0x6B4F44))
+                                .foregroundStyle(.white)
+                                .cornerRadius(10)
+                        }
+                        .padding(.bottom, 40)
+                    }
+                    // Removed the "Continue" button after the last riddle
+
+                    Spacer()
+                }
+                .foregroundColor(Color(hex: 0x6B4F44))
+            }
+            .navigationBarBackButtonHidden(true) // Remove the back button
+            .onAppear {
+                // Randomly select two riddles from the selected item's riddles
+                currentRiddles = Array(selectedItem.riddles.shuffled().prefix(2))
+                currentRiddleIndex = 0
+                // Reset flip state
+                isFlipped = false
+                backDegree = 0
+                frontDegree = -90
+            }
+            .onReceive(timer) { _ in
+                guard isActive else { return }
+                if timeRemaining > 0 {
+                    timeRemaining -= 1
+                } else {
+                    // Timer finished, navigate to VotingItemsView
+                    isActive = false
+                    navigateToVoting = true
+                }
+            }
+            .onChange(of: scenePhase) { phase in
+                isActive = phase == .active
+            }
+            .background(
+                // NavigationLink to navigate programmatically
+                NavigationLink(
+                    destination: VotingItemsView(selectedItem: selectedItem)
+                        .environmentObject(playersData) // Pass EnvironmentObject
+                        .navigationBarBackButtonHidden(true),
+                    isActive: $navigateToVoting
+                ) {
+                    EmptyView()
+                }
+            )
+        } // End of NavigationView
+    }
 
     func convertSecondsToTime(timeInSeconds: Int) -> String {
         // To get the minutes and seconds from total seconds
@@ -91,103 +203,21 @@ struct RiddlePage: View {
         // Removed navigation to the next page
     }
 
-    var body: some View {
-        ZStack {
-            // Background color
-            Color(hex: 0xE9DFCF).ignoresSafeArea()
+    // Placeholder for playSound() function
+    func playSound() {
+        // Implement your sound playing logic here
+        // For example, using AVFoundation to play a sound file
+        guard let url = Bundle.main.url(forResource: "flipSound", withExtension: "mp3") else { return }
 
-            VStack {
-                Text("Round - 1")
-                    .font(.system(.title, design: .rounded))
-                    .fontWeight(.semibold)
-                    .padding(.top, 10)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.leading, 20)
-                    .padding(.bottom, 30)
-
-                Text("⏳" + convertSecondsToTime(timeInSeconds: timeRemaining))
-                    .font(.title)
-                    .foregroundStyle(Color(hex: 0x902A39))
-                    .padding(.horizontal, 20)
-                    .padding(.vertical, 5)
-                    .background(Color(hex: 0xFFEEB3).opacity(0.45))
-                    .clipShape(Capsule())
-                    .overlay(
-                        Capsule()
-                            .stroke(Color(hex: 0xE1A86C), lineWidth: 1)
-                    )
-
-                Spacer()
-
-                // Card flip area
-                ZStack {
-                    // Card Front
-                    if currentRiddleIndex < currentRiddles.count {
-                        RiddleFront(
-                            width: width,
-                            height: height,
-                            degree: $frontDegree,
-                            riddle: currentRiddles[currentRiddleIndex]
-                        )
-                    }
-
-                    // Card Back
-                    CardBack(width: width, height: height, degree: $backDegree)
-                }
-                .onTapGesture {
-                    flipCard()
-                }
-
-                Text("Here's a riddle")
-                    .font(.system(.callout, design: .rounded))
-                    .padding(.top, 25)
-
-                Spacer()
-
-                // Show "Next Riddle" button only if there are more riddles
-                if currentRiddleIndex < currentRiddles.count - 1 {
-                    Button(action: {
-                        showNextRiddle()
-                    }) {
-                        Text("Next Riddle")
-                            .frame(width: 260, height: 45)
-                            .background(Color(hex: 0x6B4F44))
-                            .foregroundStyle(.white)
-                            .cornerRadius(10)
-                    }
-                    .padding(.bottom, 40)
-                }
-                // Removed the "Continue" button after the last riddle
-
-                Spacer()
-            }
-            .foregroundColor(Color(hex: 0x6B4F44))
-        }
-        .navigationBarBackButtonHidden(true) // Remove the back button
-        .onAppear {
-            // Randomly select two riddles from the selected item's riddles
-            currentRiddles = Array(selectedItem.riddles.shuffled().prefix(2))
-            currentRiddleIndex = 0
-            // Reset flip state
-            isFlipped = false
-            backDegree = 0
-            frontDegree = -90
-        }
-        .onReceive(timer) { _ in
-            guard isActive else { return }
-            if timeRemaining > 0 {
-                timeRemaining -= 1
-            } else {
-                // Handle timer reaching zero if needed
-            }
-        }
-        .onChange(of: scenePhase) { phase in
-            isActive = phase == .active
+        do {
+            let player = try AVAudioPlayer(contentsOf: url)
+            player.play()
+        } catch {
+            print("Error playing sound: \(error.localizedDescription)")
         }
     }
 }
 
-// Preview
 struct RiddlePage_Previews: PreviewProvider {
     static var previews: some View {
         // Provide a sample Item for preview purposes
@@ -195,6 +225,9 @@ struct RiddlePage_Previews: PreviewProvider {
             name: "Sample Item",
             riddles: ["Riddle 1", "Riddle 2", "Riddle 3"]
         )
-        RiddlePage(selectedItem: sampleItem)
+        let samplePlayersData = PlayersData()
+        samplePlayersData.playersNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
+        return RiddlePage(selectedItem: sampleItem)
+            .environmentObject(samplePlayersData) // Inject EnvironmentObject
     }
 }

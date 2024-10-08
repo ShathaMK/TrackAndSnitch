@@ -30,8 +30,6 @@ let iconColors: [Color] = [
 
 class PlayersData: ObservableObject {
     @Published var playersNames: [String] = [] // Players names
-//    @Published var playerVotes: [Int] = [] // Votes corresponding to players
-//        @Published var itemVotes: [Int] = [] // Votes corresponding to items
 }
 
 struct playersView: View {
@@ -43,6 +41,7 @@ struct playersView: View {
     @State var scrollToBottom: Bool = false // State to track scrolling
     @State var editingIndex: Int? = nil // Track which player is being edited
     @State var showPlayerWarning = false // State to manage the pop-up visibility
+    @State var navigateToGame = false // State to trigger navigation to GameView
 
     // Setting minimum and maximum players
     let minPlayers = 4
@@ -71,7 +70,8 @@ struct playersView: View {
                 
                 VStack {
                     // Updated Exit Button to navigate to ContentView
-                    NavigationLink(destination: ContentView()) {
+                    NavigationLink(destination: ContentView()
+                        .navigationBarBackButtonHidden(true)) {
                         Image(systemName: "arrowshape.left")
                             .frame(width: 30, height: 30)
                             .background(ColorHelper.colorFromHex(0x6B4E45))
@@ -165,6 +165,11 @@ struct playersView: View {
                         }
                     }
                     
+                    // Navigation Link to the GameView
+                    NavigationLink(destination: GameView(playerNames: playersData.playersNames), isActive: $navigateToGame) {
+                        EmptyView() // Hidden, but triggers the navigation
+                    }
+
                     Button(action: {
                         // Show the pop-up if the player count is less than the minimum required
                         if playersData.playersNames.count < minPlayers {
@@ -172,6 +177,7 @@ struct playersView: View {
                         } else {
                             // Proceed to the game if enough players are present
                             showPlayerWarning = false
+                            navigateToGame = true // Trigger the navigation
                         }
                     }) {
                         Text("Start")

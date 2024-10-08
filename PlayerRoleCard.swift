@@ -472,7 +472,7 @@ struct PlayerRoleCard: View {
             .onTapGesture {
                 flipCard()
             }
-        }
+        }.navigationBarBackButtonHidden(true)
     }
 }
 

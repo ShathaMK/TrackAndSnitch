@@ -1,25 +1,27 @@
 import SwiftUI
 
 struct VotingItemsView: View {
-    @ObservedObject var playersData: PlayersData  // List of players from ContentView
-    @State var currentVoterIndex: Int = 0 // Track which player is voting
-    @State var selectedItemIndex: Int? = nil      // Track selected item
-    @State var items: [String] = []               // List of voting items
-    @State var correctAnswer: String? = nil       // Correct answer
-    @State var votes: [String: String] = [:]      // Dictionary to store votes (player -> item)
-    @State var votingCompleted = false            // Track if voting is completed
-    @State var csvDataLoaded = false              // Track if the CSV has been loaded
-    @State var navigateToItemReveal = false  // For navigation to ItemVoteReveal view
+    @EnvironmentObject var playersData: PlayersData // Access PlayersData from Environment
+    let selectedItem: Item // Receive the selected item
 
-    
+    @State var currentVoterIndex: Int = 0 // Track which player is voting
+    @State var selectedItemIndex: Int? = nil // Track selected item
+    @State var items: [String] = [] // List of voting items
+    @State var correctAnswer: String = "" // Non-optional
+    @State var votes: [String: String] = [:] // Dictionary to store votes (player -> item)
+    @State var votingCompleted = false // Track if voting is completed
+    @State var csvDataLoaded = false // Track if the CSV has been loaded
+    @State private var showVotingCompleteAlert = false // For showing alert after voting
+
     var body: some View {
-NavigationView {
-        ZStack{
-            Image("bgpaper").resizable().scaledToFill().ignoresSafeArea()
-            VStack{
+        ZStack {
+            Image("bgpaper")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+            VStack {
                 if csvDataLoaded {
                     if !votingCompleted {
-                        
                         Text("What is the stolen item?")
                             .font(.title)
                             .bold()
@@ -27,26 +29,28 @@ NavigationView {
                         
                         Text("\(playersData.playersNames[currentVoterIndex])'s turn to vote")
                             .font(.title3)
-                            .foregroundColor(Color(hex: 0x6B4E45)).bold().padding(.bottom)
+                            .foregroundColor(Color(hex: 0x6B4E45))
+                            .bold()
+                            .padding(.bottom)
                         
-                        // List of players with radio buttons for voting
+                        // List of items with radio buttons for voting
                         List(items.indices, id: \.self) { index in
                             HStack {
                                 Image(systemName: selectedItemIndex == index ? "circle.circle.fill" : "circle")
                                     .foregroundColor(Color(hex: 0x6B4E45))
                                     .onTapGesture {
-                                        selectedItemIndex = index // Set selected player for vote
+                                        selectedItemIndex = index // Set selected item for vote
                                     }
                                 Text(items[index])
                                     .bold()
-                                    .foregroundColor(Color(hex: 0x6B4E45)).bold()
+                                    .foregroundColor(Color(hex: 0x6B4E45))
                                     .padding()
-                            }.listRowBackground(Color(hex: 0xFCF4E8)) // change list's row color
-                                .padding(20) // end of HStack
+                            }
+                            .listRowBackground(Color(hex: 0xFCF4E8)) // Change list's row color
+                            .padding(20)
                         }
                         .cornerRadius(5)
-                        .scrollContentBackground(.hidden) // hide the background color on the list
-                        
+                        .scrollContentBackground(.hidden) // Hide the background color on the list
                         
                         Button(action: {
                             if let selectedItemIndex = selectedItemIndex {
@@ -62,7 +66,7 @@ NavigationView {
                                     self.selectedItemIndex = nil  // Reset selection for next player
                                 } else {
                                     votingCompleted = true  // All players have voted
-                                    navigateToItemReveal = true  // Trigger navigation to item reveal view
+                                    showVotingCompleteAlert = true // Show alert upon completion
                                 }
                             }
                         }) {
@@ -73,52 +77,31 @@ NavigationView {
                                 .cornerRadius(10)
                         }
                         .disabled(selectedItemIndex == nil)  // Disable until an item is selected
-
-                        // end of button
-                    } /* else {
-                        Text("Voting completed!")
+                        .padding(.horizontal, 20)
+                        .alert(isPresented: $showVotingCompleteAlert) {
+                            Alert(
+                                title: Text("Voting Completed"),
+                                message: Text("All players have voted."),
+                                dismissButton: .default(Text("OK"))
+                            )
+                        }
+                    } else {
+                        // Optional: Additional UI when voting is completed
+                        Text("Voting Completed!")
                             .font(.title)
                             .padding()
-                        
-                        // Show the voting results
-                        Text("Results:")
-                            .font(.headline)
-                            .padding(.top)
-                        
-                        ForEach(playersData.playersNames, id: \.self) { player in
-                            if let vote = votes[player] {
-                                Text("\(player) voted for: \(vote)")
-                            }
-                        }
-                        
-                        Text("Correct answer: \(correctAnswer ?? "")")
-                            .font(.headline)
-                            .padding(.top)
-                    } // end of if else */
+                    }
                 } else {
                     Text("Loading voting items...")
-                } // end of it and else
+                }
             }
             .onAppear {
                 loadItemsFromCSV()
             }
             .padding()
-            // yhis is correct, come back later. we want to connect this page with player voting reveal
-           NavigationLink(destination: VotingRevealItems(
-            itemsVotes: calculateItemVotes(votes: votes)).navigationBarBackButtonHidden(true),
-                           isActive: $navigateToItemReveal) {
-                EmptyView() // This ensures we only navigate when the button triggers it
-            }
-            
-//VotingReveal
+        } // End of ZStack
+    } // End of body
 
-        } // end of ZStack
-        
-    } // end of nav view
-    
-    } // end of body
-    
-    
     func calculateItemVotes(votes: [String: String]) -> [(item: String, votes: Int)] {
         var itemVoteCount: [String: Int] = [:]
         
@@ -136,8 +119,6 @@ NavigationView {
         return itemVoteCount.map { (item: $0.key, votes: $0.value) }
     }
 
-    
-    
     // Function to load items from the CSV file
     func loadItemsFromCSV() {
         // Specify the path to the CSV file
@@ -168,15 +149,18 @@ NavigationView {
                 }
                 
                 // Pick one correct answer and two wrong items
-                //if let correct = selectedItem
-
                 if let correct = allItems.randomElement() {
                     correctAnswer = correct
                     var wrongItems = allItems.filter { $0 != correct }
                     wrongItems.shuffle()
                     
                     // Combine the correct answer with two wrong ones
-                    items = ([correct] + wrongItems.prefix(2)).shuffled()
+                    if wrongItems.count >= 2 {
+                        items = ([correct] + wrongItems.prefix(2)).shuffled()
+                    } else {
+                        // Handle cases where there are fewer than 2 wrong items
+                        items = ([correct] + wrongItems).shuffled()
+                    }
                     csvDataLoaded = true  // Indicate that data is ready
                 }
             } catch {
@@ -187,17 +171,14 @@ NavigationView {
         }
     } // end of function
 
-    
 } // end of VotingItemsView
-
 
 struct VotingItemsView_Previews: PreviewProvider {
     static var previews: some View {
         let samplePlayersData = PlayersData()
         samplePlayersData.playersNames = ["Player 1", "Player 2", "Player 3", "Player 4"]
-        return VotingItemsView(playersData: samplePlayersData)
+        let sampleItem = Item(name: "Sample Item", riddles: ["Riddle 1", "Riddle 2"])
+        return VotingItemsView(selectedItem: sampleItem)
+            .environmentObject(samplePlayersData) // Inject EnvironmentObject for preview
     }
 }
-
-
-
