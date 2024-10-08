@@ -7,6 +7,7 @@ struct WinnersView: View {
     @State private var degree: Double = 0
     @State private var counter = 0
     @State private var player: AVPlayer? = nil
+    @State private var playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"] // Example player names
     let buttonColor = Color(UIColor(red: 107/255, green: 78/255, blue: 69/255, alpha: 1))
 
     var body: some View {
@@ -48,7 +49,7 @@ struct WinnersView: View {
                     Spacer()
 
                     HStack {
-                        NavigationLink(destination: GameView()) {  // Navigate to GameView for "Play again"
+                        NavigationLink(destination: GameView(playerNames: playerNames)) {  // Navigate to GameView for "Play again" with player names
                             Text("Play again")
                                 .padding()
                                 .background(buttonColor)
