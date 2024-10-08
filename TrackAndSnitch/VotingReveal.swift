@@ -79,8 +79,14 @@ struct VotingReveal: View {
                     .scrollContentBackground(.hidden) // Hide background of the list
                     .padding(.horizontal, 15)
                     
+                    // Get the most voted player's name
+                    let mostVotedPlayerName = mostVotedPlayer?.name ?? "Unknown" // CHANGE HERE
+
                     // Navigation Link to WinnersView
-                    NavigationLink(destination: WinnersView(playerRole: mostVotedPlayerRole)) {
+                    // Old NavigationLink code:
+                    // NavigationLink(destination: WinnersView(playerRole: mostVotedPlayerRole)) {
+                    // Updated NavigationLink code:
+                    NavigationLink(destination: WinnersView(mostVotedPlayerRole: mostVotedPlayerRole, mostVotedPlayerName: mostVotedPlayer?.name ?? "Unknown")) {
                         Text("Reveal The Winners")
                             .font(.title3)
                             .padding()

@@ -8,11 +8,12 @@ struct WinnersView: View {
     @State private var counter = 0
     @State private var player: AVPlayer? = nil
     @State private var playerNames = ["Player 1", "Player 2", "Player 3", "Player 4"] // Example player names
-    var mostVotedPlayerRole: String? // this var is where the winner's role
-    var playerRole: String // Accept the player role as a parameter
-
+    var mostVotedPlayerRole: String // this var is where the winner's role
+    //var playerRole: String // Accept the player role as a parameter
+    var mostVotedPlayerName: String //NEW CHANGE
 
     let buttonColor = Color(UIColor(red: 107/255, green: 78/255, blue: 69/255, alpha: 1))
+    
 
     var body: some View {
         NavigationStack {  // Add NavigationStack for navigation
@@ -25,12 +26,20 @@ struct WinnersView: View {
 
                 // Main Content
                 VStack {
-                    Text("Congrats! \nYou've caught the thief")
+                    Text(winnerText())
                         .font(.headline)
                         .fontWeight(.heavy)
                         .multilineTextAlignment(.center)
                         .padding(.top, 20)
                         .foregroundColor(Color(red: 0.979, green: 0.92, blue: 0.829))
+                    
+                    // NEW CHANGE
+                    Text("Most Voted Player: \(mostVotedPlayerName)") // New line to display the winner's name
+                        .font(.title)
+                        .fontWeight(.bold)
+                        .foregroundColor(Color(red: 0.979, green: 0.92, blue: 0.829))
+                        .padding()
+
 
                     Spacer()
 
@@ -72,6 +81,7 @@ struct WinnersView: View {
                     .padding(.bottom, 20)
                 }
                 .confettiCannon(counter: $counter, repetitions: 3, repetitionInterval: 0.5)
+                
             }
         }
     }
@@ -92,6 +102,20 @@ struct WinnersView: View {
             print("Error: Could not find audio file.")
         }
     }
+    
+    
+    func winnerText() -> String {
+        if mostVotedPlayerRole == "Thief" {
+            return "Congratulations to the Trackers!"
+        } else if mostVotedPlayerRole == "Tracker" {
+            return "Congratulations to the Thief!"
+        } else {
+            return "It's a Tie!"
+        }
+    }
+
+
+    
 }
 
 // Card Back struct
@@ -130,6 +154,7 @@ struct CardFrontW: View {
 
 struct WinnersView_Previews: PreviewProvider {
     static var previews: some View {
-        WinnersView(playerRole: "Thief") // Sample role
+        WinnersView(mostVotedPlayerRole: "Thief", mostVotedPlayerName: "Player 3") // Sample values
     }
 }
+

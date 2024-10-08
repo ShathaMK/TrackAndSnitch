@@ -5,11 +5,11 @@
 //  Created by Whyyy on 06/10/2024.
 //
 import SwiftUI
-
+//
 struct ContentView: View {
     @State private var shine = false
     @State private var showingInstructions = false // State to manage the instructions sheet
-    
+    ////
     // Custom color for the buttons
     let buttonColor = Color(UIColor(red: 107/255, green: 78/255, blue: 69/255, alpha: 1)) // #6B4E45
     

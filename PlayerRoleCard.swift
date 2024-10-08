@@ -130,34 +130,34 @@ func createPlayers(playerNames: [String]) -> (players: [Player], selectedItem: I
         print("No items found in db7.csv")
         return nil
     }
-    
+    //
     // Randomly select an item
     let selectedItem = items.randomElement()!
     
     // Define role configurations separately, incorporating the selected item
     let rolesFor2Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
-        ("\n\n\n\n\n\nThief", "Thief_")
+        ("Thief", "Thief_")
     ]
     
     let rolesFor3Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
-        ("\n\n\n\n\n\nThief", "Thief_")
+        ("Thief", "Thief_")
     ]
     
     let rolesFor4Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
-        ("\n\n\n\n\n\nThief", "Thief_")
+        ("Thief", "Thief_")
     ]
     
     let rolesFor5Players: RoleConfiguration = [
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
-        ("\n\n\n\n\n\nThief", "Thief_"),
+        ("Thief", "Thief_"),
         ("Trickster", "Trickster_")
     ]
     
@@ -166,7 +166,7 @@ func createPlayers(playerNames: [String]) -> (players: [Player], selectedItem: I
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("\n\n\n\n\n\n\n\n\nHelper", "Helper_"),
-        ("\n\n\n\n\n\nThief", "Thief_"),
+        ("Thief", "Thief_"),
         ("Trickster", "Trickster_")
     ]
     
@@ -176,7 +176,7 @@ func createPlayers(playerNames: [String]) -> (players: [Player], selectedItem: I
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("\n\n\n\n\n\nHelper", "Helper_"),
-        ("\n\n\n\n\n\nThief", "Thief_"),
+        ("Thief", "Thief_"),
         ("Trickster", "Trickster_")
     ]
     
@@ -187,7 +187,7 @@ func createPlayers(playerNames: [String]) -> (players: [Player], selectedItem: I
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("\n\n\n\n\n\nHelper", "Helper_"),
-        ("\n\n\n\n\n\nThief", "Thief_"),
+        ("Thief", "Thief_"),
         ("Trickster", "Trickster_")
     ]
     
@@ -199,7 +199,7 @@ func createPlayers(playerNames: [String]) -> (players: [Player], selectedItem: I
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("\n\n\n\n\n\nHelper", "Helper_"),
-        ("\n\n\n\n\n\nThief", "Thief_"),
+        ("Thief", "Thief_"),
         ("Trickster", "Trickster_")
     ]
     
@@ -212,7 +212,7 @@ func createPlayers(playerNames: [String]) -> (players: [Player], selectedItem: I
         ("Tracker", "Trackers_"),
         ("Tracker", "Trackers_"),
         ("\n\n\n\n\n\nHelper", "Helper_"),
-        ("\n\n\n\n\n\nThief", "Thief_"),
+        ("Thief", "Thief_"),
         ("Trickster", "Trickster_")
     ]
     
@@ -407,10 +407,10 @@ struct PlayerRoleCard: View {
 
                         if isFlipped {
                             Text("\(currentPlayer.name), hide your card")
-                                .font(.system(.title, design: .rounded))
-                        } else {
+                                .font(.system(.title, design: .rounded)).padding(.top,25)
+                        } else {//
                             Text("\(currentPlayer.name), flip the card")
-                                .font(.system(.title, design: .rounded))
+                                .font(.system(.title, design: .rounded)).padding(.top,25)
                         }
 
                         // Spacing for the title & button placement
@@ -423,7 +423,10 @@ struct PlayerRoleCard: View {
                         Spacer()
                         Spacer()
                         Spacer()
-
+                        
+                       
+            
+                        Spacer()
                         if isFlipped {
                             if currentPlayer.title.contains("Helper") {
                                 // If the current player is the Helper, show the thief's name
@@ -439,7 +442,7 @@ struct PlayerRoleCard: View {
                                     // If the current player is the Thief, show the item stolen
                                     Text("\(currentPlayer.title)\nItem stolen: \(selectedItem.name)")
                                         .font(.title)
-                                        .multilineTextAlignment(.center)
+                                        .multilineTextAlignment(.center).padding(.top,120)
                                 } else {
                                     Text(currentPlayer.title) // Show title of the card
                                         .font(.title)
