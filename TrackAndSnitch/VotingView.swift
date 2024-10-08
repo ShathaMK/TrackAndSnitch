@@ -11,6 +11,8 @@ struct VotingView: View {
     @State private var votingCompleted = false // Track if voting is completed
     @State private var tiePlayers: [String] = [] // Holds the players who tied, if any
    // @State private var navigateToReveal = false  // Trigger navigation
+    @State private var navigateToThiefScreen = false // Navigate if a thief wins
+    @State private var navigateToTrackerScreen = false // Navigate if other role wins
 
 
     var body: some View {
@@ -69,13 +71,29 @@ struct VotingView: View {
                         .disabled(selectedPlayerIndex == nil) // Disable button if no selection
                     } //else {
                    
+                    //THIS IS WORKING BUT WE NEED TO PASS THR ROLES AS WELL
                     // Navigate to the VotingReveal view when voting is completed
-                    NavigationLink(
+                /*    NavigationLink(
                         destination: VotingReveal(playersData: playersData, playersVotes: playersVotes).navigationBarBackButtonHidden(true), isActive: .constant(votingCompleted)
                     ) {
                         EmptyView()
-                    }
-
+                    } */
+                    
+                    // Navigate based on the role of the player with most votes
+                        
+                    NavigationLink(
+                        destination: WinnersView(), // Screen to navigate if the thief wins
+                             isActive: $navigateToThiefScreen
+                         ) {
+                             EmptyView()
+                         }
+                         
+                         NavigationLink(
+                             destination: WinnersView(), // Screen to navigate if non-thief wins
+                             isActive: $navigateToTrackerScreen // edit the destination here later
+                         ) {
+                             EmptyView()
+                         }
                     
                     // If voting is completed, navigate to results
                     /*    NavigationLink(destination: VotingItemsView(playersData: playersData).navigationBarBackButtonHidden(true), isActive: .constant(votingCompleted)) {
@@ -93,12 +111,20 @@ struct VotingView: View {
         // Combine player names and votes into an array of tuples
         playersVotes = zip(playersData.playersNames, votes).map { ($0, $1) }
 
-        // Calculate if there's a tie
+        // Find the player with the most votes
         let maxVotes = votes.max() ?? 0
-        let mostVotedPlayers = playersData.playersNames.indices.filter { votes[$0] == maxVotes }
-
-        if mostVotedPlayers.count > 1 {
-            tiePlayers = mostVotedPlayers.map { playersData.playersNames[$0] }
+        let mostVotedPlayerIndex = votes.firstIndex(of: maxVotes) ?? 0
+        let mostVotedPlayer = playersData.playersNames[mostVotedPlayerIndex]
+        
+        // Retrieve role of the most voted player
+        let playerRoles = PlayerRoleStorage.shared.getRoles() // Retrieve saved roles
+        let roleOfMostVotedPlayer = playerRoles.first { $0.0 == mostVotedPlayer }?.1
+        
+        // Navigate based on the role
+        if roleOfMostVotedPlayer == "Thief" {
+            navigateToThiefScreen = true
+        } else {
+            navigateToTrackerScreen = true
         }
     } // end of function
 }

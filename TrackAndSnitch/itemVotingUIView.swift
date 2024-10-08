@@ -168,6 +168,8 @@ NavigationView {
                 }
                 
                 // Pick one correct answer and two wrong items
+                //if let correct = selectedItem
+
                 if let correct = allItems.randomElement() {
                     correctAnswer = correct
                     var wrongItems = allItems.filter { $0 != correct }

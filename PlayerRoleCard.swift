@@ -24,6 +24,20 @@ func playSound() {
     }
 }
 
+class PlayerRoleStorage {
+    static let shared = PlayerRoleStorage() // Singleton instance to allow global access
+    private(set) var assignedPlayerRoles: [(String, String)] = [] // Tuple to store player names and roles
+
+    func saveRoles(_ roles: [(String, String)]) {
+        assignedPlayerRoles = roles
+    }
+
+    func getRoles() -> [(String, String)] {
+        return assignedPlayerRoles
+    }
+}
+
+
 // Define data models
 struct Item {
     let name: String
@@ -234,7 +248,9 @@ func createPlayers(playerNames: [String]) -> (players: [Player], selectedItem: I
             players.append(Player(name: name, cardImage: "Trackers_", title: "Tracker"))
         }
     }
-    
+    // Store the assigned roles in the PlayerRoleStorage singleton
+    PlayerRoleStorage.shared.saveRoles(players.map { ($0.name, $0.title) }) // newly added to send the roles over to the next pages
+
     return (players, selectedItem)
 }
 
