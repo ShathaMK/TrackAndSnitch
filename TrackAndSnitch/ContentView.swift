@@ -1,21 +1,14 @@
-//
-//  ContentView.swift
-//  TrackAndSnitch
-//
-//  Created by Whyyy on 06/10/2024.
-//
-
 import SwiftUI
 
 struct ContentView: View {
     @State private var shine = false
-    //    @State private var showingInstructions = false // State to manage the instructions sheet
+    @State private var showingInstructions = false // State to manage the instructions sheet
     
     // Custom color for the buttons
     let buttonColor = Color(UIColor(red: 107/255, green: 78/255, blue: 69/255, alpha: 1)) // #6B4E45
     
     var body: some View {
-        NavigationView {
+        NavigationView {  // Add NavigationView to the entire view
             ZStack {
                 // Background Image
                 Image("BackgroundImage") // Your background image
@@ -23,10 +16,13 @@ struct ContentView: View {
                     .scaledToFill()
                     .ignoresSafeArea()
                 
-                VStack {// Information icon in the top-right corner
+                VStack {
+                    // Information icon in the top-right corner
                     HStack {
                         Spacer()
-                        NavigationLink(destination: GameInstructions()) {
+                        Button(action: {
+                            showingInstructions.toggle() // Show instructions when tapped
+                        }) {
                             Image(systemName: "info.circle")
                                 .font(.system(size: 24))
                                 .foregroundColor(.white)
@@ -37,7 +33,6 @@ struct ContentView: View {
                     
                     // ZStack for stars behind the title
                     ZStack {
-                        // Fixed positions for the stars (no random offsets)
                         FourPointStar()
                             .fill(Color.white)
                             .frame(width: 40, height: 15)
@@ -136,7 +131,6 @@ struct ContentView: View {
                             .animation(.easeInOut(duration: 1.3).repeatForever(), value: shine)
                             .offset(x: 119, y: 34)
                         
-                        
                         FourPointStar()
                             .fill(Color.white)
                             .frame(width: 40, height: 20)
@@ -165,10 +159,11 @@ struct ContentView: View {
                             .animation(.easeInOut(duration: 1.5).repeatForever(), value: shine)
                             .offset(x: 50, y: -100)
                     }
+                    
                     .frame(height: 200) // Restrict the star area to the top
                     
                     Text("WELCOME \nTO \n SNEAK OR SEEK")
-                        .font(.system(.largeTitle, design: .rounded))
+                        .font(.largeTitle)
                         .fontWeight(.heavy)
                         .multilineTextAlignment(.center)
                         .padding(.top, 40)
@@ -177,7 +172,7 @@ struct ContentView: View {
                     Spacer()
                     
                     // Logo image with a frame overlay
-                    Image( "squarelogo")
+                    Image("squarelogo")
                         .resizable()
                         .frame(width: 150, height: 150)
                         .padding()
@@ -188,12 +183,12 @@ struct ContentView: View {
                     
                     Spacer()
                     
-                    // Start Button
-                    NavigationLink(destination: GameInstructions()){
+                    // Start Button with NavigationLink
+                    NavigationLink(destination: GameInstructions()) { // Navigate to GameInstructions when tapped
                         Text("Start")
                             .font(.title2)
                             .frame(width: 150, height: 50)
-                            .background(buttonColor) // Updated button color
+                            .background(buttonColor)
                             .cornerRadius(10)
                             .foregroundColor(.white)
                     }
@@ -202,45 +197,44 @@ struct ContentView: View {
                 .onAppear {
                     shine.toggle() // Start the glow animation
                 }
-                //            .sheet(isPresented: $showingInstructions) {
-                //                // Instructions Sheet
-                //                VStack(spacing: 20) {
-                //                    Text("Instructions")
-                //                        .font(.title)
-                //                        .fontWeight(.bold)
-                //                        .padding()
-                //
-                //                    Text("""
-                //                         1. Tap the 'Start' button to begin.
-                //                         2. Use the logo page for navigation.
-                //                         3. Follow on-screen prompts for the next steps.
-                //                         """)
-                //                        .font(.body)
-                //                        .multilineTextAlignment(.center)
-                //                        .padding()
-                //
-                //                    Button("Close") {
-                //                        showingInstructions = false // Close the sheet
-                //                    }
-                //                    .padding()
-                //                    .background(Color.blue)
-                //                    .foregroundColor(.white)
-                //                    .cornerRadius(10)
-                //                }
-                //                .padding()
-                //            }
-            }.navigationBarHidden(true) // Hide navigation bar if needed
+                .sheet(isPresented: $showingInstructions) {
+                    // Instructions Sheet
+                    VStack(spacing: 20) {
+                        Text("Instructions")
+                            .font(.title)
+                            .fontWeight(.bold)
+                            .padding()
+                        
+                        Text("""
+                             1. Tap the 'Start' button to begin.
+                             2. Use the logo page for navigation.
+                             3. Follow on-screen prompts for the next steps.
+                             """)
+                            .font(.body)
+                            .multilineTextAlignment(.center)
+                            .padding()
+                        
+                        Button("Close") {
+                            showingInstructions = false // Close the sheet
+                        }
+                        .padding()
+                        .background(Color.blue)
+                        .foregroundColor(.white)
+                        .cornerRadius(10)
+                    }
+                    .padding()
+                }
+            }
         }
-        .navigationViewStyle(StackNavigationViewStyle()) // Optional: For consistent behavior across devices
     }
 }
-    
-    // Custom Four-Point Star Shape
+
+// Custom Four-Point Star Shape
 struct FourPointStar: Shape {
     func path(in rect: CGRect) -> Path {
         let width = rect.width
         let height = rect.height
-            
+        
         let starPath = Path { path in
             // Starting point (Top middle)
             path.move(to: CGPoint(x: width / 2, y: 0))
@@ -255,7 +249,7 @@ struct FourPointStar: Shape {
     }
 }
 
-
+// Preview
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()

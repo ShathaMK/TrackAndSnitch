@@ -1,10 +1,3 @@
-//
-//  RiddlePage.swift
-//  TrackAndSnitch
-//
-//  Created by Shatha Almukhaild on 29/03/1446 AH.
-//
-
 import SwiftUI
 import AVFoundation
 
@@ -99,40 +92,36 @@ struct RiddlePage: View {
     }
 
     var body: some View {
-        NavigationView {
-            ZStack {
-                // Background color
-                Color(hex: 0xE9DFCF).ignoresSafeArea()
+        ZStack {
+            // Background color
+            Color(hex: 0xE9DFCF).ignoresSafeArea()
 
-                VStack {
-                    Text("Round - 1")
-                        .font(.system(.title, design: .rounded))
-                        .fontWeight(.semibold)
-                        .padding(.top, 10)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading, 20)
-                        .padding(.bottom, 30)
+            VStack {
+                Text("Round - 1")
+                    .font(.system(.title, design: .rounded))
+                    .fontWeight(.semibold)
+                    .padding(.top, 10)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading, 20)
+                    .padding(.bottom, 30)
 
-                    Text("⏳" + convertSecondsToTime(timeInSeconds: timeRemaining))
-                        .font(.title)
-                        .foregroundStyle(Color(hex: 0x902A39))
-                        .padding(.horizontal, 20)
-                        .padding(.vertical, 5)
-                        .background(Color(hex: 0xFFEEB3).opacity(0.45))
-                        .clipShape(Capsule())
-                        .overlay(
-                            Capsule()
-                                .stroke(Color(hex: 0xE1A86C), lineWidth: 1)
-                        )
+                Text("⏳" + convertSecondsToTime(timeInSeconds: timeRemaining))
+                    .font(.title)
+                    .foregroundStyle(Color(hex: 0x902A39))
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 5)
+                    .background(Color(hex: 0xFFEEB3).opacity(0.45))
+                    .clipShape(Capsule())
+                    .overlay(
+                        Capsule()
+                            .stroke(Color(hex: 0xE1A86C), lineWidth: 1)
+                    )
 
-                    Spacer()
-                    Spacer()
-                    Spacer()
-                    Spacer()
-                    Spacer()
-                    Spacer()
+                Spacer()
 
-                    // Check if currentRiddleIndex is within bounds before accessing
+                // Card flip area
+                ZStack {
+                    // Card Front
                     if currentRiddleIndex < currentRiddles.count {
                         RiddleFront(
                             width: width,
@@ -142,39 +131,39 @@ struct RiddlePage: View {
                         )
                     }
 
-                    Text("Here's a riddle")
-                        .font(.system(.callout, design: .rounded))
-                        .padding(.top, 25)
-
-                    Spacer()
-                    Spacer()
-                    Spacer()
-
-                    // Show "Next Riddle" button only if there are more riddles
-                    if currentRiddleIndex < currentRiddles.count - 1 {
-                        Button(action: {
-                            showNextRiddle()
-                        }) {
-                            Text("Next Riddle")
-                                .frame(width: 260, height: 45)
-                                .background(Color(hex: 0x6B4F44))
-                                .foregroundStyle(.white)
-                                .cornerRadius(10)
-                        }
-                        .padding(.bottom, 40)
-                    }
-                    // Removed the "Continue" button after the last riddle
-
-                    Spacer()
+                    // Card Back
+                    CardBack(width: width, height: height, degree: $backDegree)
                 }
-                .foregroundColor(Color(hex: 0x6B4F44))
+                .onTapGesture {
+                    flipCard()
+                }
 
-                // CardBack view
-                CardBack(width: width, height: height, degree: $backDegree)
+                Text("Here's a riddle")
+                    .font(.system(.callout, design: .rounded))
+                    .padding(.top, 25)
+
+                Spacer()
+
+                // Show "Next Riddle" button only if there are more riddles
+                if currentRiddleIndex < currentRiddles.count - 1 {
+                    Button(action: {
+                        showNextRiddle()
+                    }) {
+                        Text("Next Riddle")
+                            .frame(width: 260, height: 45)
+                            .background(Color(hex: 0x6B4F44))
+                            .foregroundStyle(.white)
+                            .cornerRadius(10)
+                    }
+                    .padding(.bottom, 40)
+                }
+                // Removed the "Continue" button after the last riddle
+
+                Spacer()
             }
-            .navigationBarBackButtonHidden(true) // Remove the back button
+            .foregroundColor(Color(hex: 0x6B4F44))
         }
-        .navigationBarBackButtonHidden(true) // Ensure back button is hidden
+        .navigationBarBackButtonHidden(true) // Remove the back button
         .onAppear {
             // Randomly select two riddles from the selected item's riddles
             currentRiddles = Array(selectedItem.riddles.shuffled().prefix(2))
@@ -195,12 +184,8 @@ struct RiddlePage: View {
         .onChange(of: scenePhase) { phase in
             isActive = phase == .active
         }
-        .onTapGesture {
-            flipCard()
-        }
     }
 }
-
 
 // Preview
 struct RiddlePage_Previews: PreviewProvider {
