@@ -53,6 +53,7 @@ struct VotingRevealItems: View {
                     
                     // Display the vote counts for each item
                     List {
+                       
                         ForEach(Array(itemsVotes.enumerated()), id: \.element.item) { index, item in
                             HStack {
                                 // Item's name
@@ -78,6 +79,8 @@ struct VotingRevealItems: View {
                                     .bold()
                             }
                             .padding(.vertical, 10)
+                         //   .padding(.horizontal, 10)
+
                         }
                         .listRowBackground(Color(hex: 0xFCF4E8)) // Change list's row color
                     }
@@ -87,7 +90,7 @@ struct VotingRevealItems: View {
                     
                         .font(.title2)
                         .background(Color(hex: 0x6B4E45))
-                        .padding()
+                       // .padding()
                     
                     
                     NavigationLink(destination: VotingView(playersData: playersData)

@@ -46,7 +46,7 @@ struct RiddlePage: View {
     // The duration and delay of the flip animation
     let durationAndDelay: CGFloat = 0.3
     // Timer variables
-    @State private var timeRemaining = 180
+    @State private var timeRemaining = 15
     @State private var currentRiddleIndex: Int = 0
     @State private var isActive = true
     @State private var currentRiddles: [String] = []

@@ -30,7 +30,7 @@ struct WinnersView: View {
                         .font(.headline)
                         .fontWeight(.heavy)
                         .multilineTextAlignment(.center)
-                        .padding(.top, 20)
+                        .padding(.top, 10)
                         .foregroundColor(Color(red: 0.979, green: 0.92, blue: 0.829))
                     
                     // NEW CHANGE

@@ -38,7 +38,8 @@ struct ContentView: View {
                     }
                     
                     // ZStack for stars behind the title
-                    ZStack {
+                    ZStack{
+                        
                         FourPointStar()
                             .fill(Color.white)
                             .frame(width: 40, height: 15)
@@ -169,14 +170,28 @@ struct ContentView: View {
                     
                     .frame(height: 200) // Restrict the star area to the top
                     
-                    Text("WELCOME \nTO \n SNEAK OR SEEK")
+
+                    Text("WELCOME")
                         .multilineTextAlignment(.center)
                         .padding(.top, 80)
                         .foregroundColor(Color(red: 0.975, green: 0.916, blue: 0.817))
                         .font(.system(size: 36, weight: .heavy, design: .rounded))
                     
-                    Spacer()
+                    Text("TO")
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(Color(red: 0.975, green: 0.916, blue: 0.817))
+                        .font(.system(size: 36, weight: .heavy, design: .rounded))
                     
+                    Text("SNEAK OR SEEK")
+                        .multilineTextAlignment(.center)
+//                        .padding(.bottom, 80)
+                        .foregroundColor(Color(red: 0.975, green: 0.916, blue: 0.817))
+                        .font(.system(size: 36, weight: .heavy, design: .rounded))
+                    
+                    Spacer()
+                    Spacer()
+                    Spacer()
+                    Spacer()
                     // Logo image with a frame overlay
                     Image("squarelogo")
                         .resizable()
@@ -186,7 +201,6 @@ struct ContentView: View {
                             RoundedRectangle(cornerRadius: 15)
                                 .stroke(Color.white, lineWidth: 4)
                         )
-                    
                     Spacer()
                     
                     // Start Button with NavigationLink
@@ -199,7 +213,8 @@ struct ContentView: View {
                             .foregroundColor(.white)
                     }
                     .padding(.bottom, 40)
-                }
+                }.padding(.trailing, 50)
+                .padding(.bottom, 50)
                 .onAppear {
                     shine.toggle() // Start the glow animation
                 }
