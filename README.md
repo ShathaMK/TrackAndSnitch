@@ -7,7 +7,8 @@ is a game based on Saudi culture as back in the day they used to refer to foot p
 
 
 <br/>
-
+<h3 align="left">Main objective:</h3>
+Find the theif and the stolen item.
 <h3>Gameplay Insturctions:</h3>
 
 There is four roles in this game Tracker , Helper , Trickster and Thief.
@@ -32,7 +33,7 @@ The game requires a group of 4 - 10 players.
 
 <br/>
 
-<h3 align="left">Languages and Tools:</h3>
+
 
 
 <h3 align="left">Languages and Tools:</h3>
